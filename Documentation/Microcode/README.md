@@ -1,6 +1,7 @@
 #Magic-1 Microcode
 <pre>V2.3 by Bill Buzbee.</pre>
 
+<html>
 <h3>Bottom half of PROM -&nbsp; (starting point of each instruction, using opcode as direct index)</h3>
 <table border="1" width="916" height="6345" id="table1" bordercolordark="#003399" bordercolorlight="#003399">
 
@@ -4620,3 +4621,4 @@
 						</tr>
 
 </table>
+</html>
