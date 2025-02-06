@@ -1,7 +1,9 @@
 #Magic-1 Microcode
 <pre>V2.3 by Bill Buzbee.</pre>
+[!NOTE]
+Important note: the following data is not official data but my attempt to understand and summarize how Magic 1 works.<br>There may be errors in the text - if one is found - please let me know about it so that I can make corrections in it. 
 
-<html>
+
 <h3>Bottom half of PROM -&nbsp; (starting point of each instruction, using opcode as direct index)</h3>
 <table border="1" width="916" height="6345" id="table1" bordercolordark="#003399" bordercolorlight="#003399">
 
@@ -4621,4 +4623,4 @@
 						</tr>
 
 </table>
-</html>
+
