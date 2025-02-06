@@ -4,4623 +4,518 @@
 >Important note: the following data is not official data but my attempt to understand and summarize how Magic 1 works.<br>There may be errors in the text - if one is found - please let me know about it so that I can make corrections in it. 
 
 
-<h3>Bottom half of PROM -&nbsp; (starting point of each instruction, using opcode as direct index)</h3>
-<table border="1" width="916" height="6345" id="table1" bordercolordark="#003399" bordercolorlight="#003399">
 
-						<tr>
-
-							<td width="33" height="19">0x00</td>
-							<td width="235" height="19">halt</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">MISC(M_HALT),DEC_TO_Z(R_PC),L(R_PC,LWORD),CODE,NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x01</td>
-							<td width="235" height="19">ld.8 A,#u16_u8_10(SP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Lda8_16">Lda8_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x02</td>
-							<td width="235" height="19">push C</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_C),L(R_MDR,LWORD),NEXT(<a href="#Push16">Push16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x03</td>
-							<td width="235" height="19">push PC</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_TPC),L(R_MDR,LWORD),NEXT(<a href="#Push16">Push16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x04</td>
-							<td width="235" height="19">push DP</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_DP),L(R_MDR,LWORD),NEXT(<a href="#Push16">Push16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x05</td>
-							<td width="235" height="19">ld.8 B,#u16_u8_10(SP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Ldb8_16">Ldb8_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x06</td>
-							<td width="235" height="19">push A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_A),L(R_MDR,LWORD),NEXT(<a href="#Push16">Push16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x07</td>
-							<td width="235" height="19">push B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),L(R_MDR,LWORD),NEXT(<a href="#Push16">Push16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x08</td>
-							<td width="235" height="19">br.ne #d16</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#BrNegated">BrNegated</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x09</td>
-							<td width="235" height="19">pop MSW</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_SP),DATA,NEXT(<a href="#Pop16">Pop16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x0a</td>
-							<td width="235" height="19">pop C</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_SP),DATA,NEXT(<a href="#Pop16">Pop16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x0b</td>
-							<td width="235" height="19">pop PC</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_SP),DATA,NEXT(<a href="#Pop16">Pop16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x0c</td>
-							<td width="235" height="19">pop DP</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_SP),DATA,NEXT(<a href="#Pop16">Pop16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x0d</td>
-							<td width="235" height="19">pop SP</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_SP),DATA,NEXT(<a href="#Pop16">Pop16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x0e</td>
-							<td width="235" height="19">pop A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_SP),DATA,NEXT(<a href="#Pop16">Pop16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x0f</td>
-							<td width="235" height="19">pop B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_SP),DATA,NEXT(<a href="#Pop16">Pop16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x10</td>
-							<td width="235" height="19">ld.8 A,#u16(DP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Lda8_16">Lda8_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x11</td>
-							<td width="235" height="19">ld.8 A,#u8(SP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMLO,NEXT(<a href="#Lda8_8">Lda8_8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x12</td>
-							<td width="235" height="19">ld.8 A,#u16(A)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Lda8_16">Lda8_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x13</td>
-							<td width="235" height="19">ld.8 A,#u16(B)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Lda8_16">Lda8_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x14</td>
-							<td width="235" height="19">ld.8 B,#u16(DP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Ldb8_16">Ldb8_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x15</td>
-							<td width="235" height="19">ld.8 B,#u8(SP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMLO,NEXT(<a href="#Ldb8_8">Ldb8_8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x16</td>
-							<td width="235" height="19">ld.8 B,#u16(A)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Ldb8_16">Ldb8_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x17</td>
-							<td width="235" height="19">ld.8 B,#u16(B)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Ldb8_16">Ldb8_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x18</td>
-							<td width="235" height="19">ld.16 A,#u16(DP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Lda16_16">Lda16_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x19</td>
-							<td width="235" height="19">ld.16 A,#u16_u8_68(SP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Lda16_16">Lda16_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x1a</td>
-							<td width="235" height="19">ld.16 A,#u16(A)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Lda16_16">Lda16_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x1b</td>
-							<td width="235" height="19">ld.16 A,#u16(B)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Lda16_16">Lda16_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x1c</td>
-							<td width="235" height="19">ld.16 B,#u16(DP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Ldb16_16">Ldb16_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x1d</td>
-							<td width="235" height="19">ld.16 B,#u16_u8_68(SP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Ldb16_16">Ldb16_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x1e</td>
-							<td width="235" height="19">ld.16 B,#u16(A)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Ldb16_16">Ldb16_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x1f</td>
-							<td width="235" height="19">ld.16 B,#u16(B)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Ldb16_16">Ldb16_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x20</td>
-							<td width="235" height="19">sub.8 A,#u16(DP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Aluop8_indir16">Aluop8_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x21</td>
-							<td width="235" height="19">sub.8 A,#u16(SP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Aluop8_indir16">Aluop8_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x22</td>
-							<td width="235" height="19">push MSW</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_MSW),L(R_MDR,LWORD),NEXT(<a href="#Push16">Push16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x23</td>
-							<td width="235" height="19">sub.8 A,#u16(B)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Aluop8_indir16">Aluop8_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x24</td>
-							<td width="235" height="19">sub.8 A,#i8_1</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMLO,NEXT(<a href="#Aluop8">Aluop8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x25</td>
-							<td width="235" height="19">sub.16 (--A),(--B)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">DEC_TO_Z(R_A),DATA,NEXT(<a href="#Mop16">Mop16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x26</td>
-							<td width="235" height="19">push SP</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_SP),L(R_MDR,LWORD),NEXT(<a href="#Push16">Push16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x27</td>
-							<td width="235" height="19">sub.8 A,B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),L(R_MDR,LWORD),NEXT(<a href="#Aluop8">Aluop8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x28</td>
-							<td width="235" height="19">sub.16 A,#u16(DP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Aluop16_indir16">Aluop16_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x29</td>
-							<td width="235" height="19">sub.16 A,#u16(SP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Aluop16_indir16">Aluop16_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x2a</td>
-							<td width="235" height="19">sbc.16 (--A),(--B)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">DEC_TO_Z(R_A),DATA,NEXT(<a href="#Mop16Carry">Mop16Carry</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x2b</td>
-							<td width="235" height="19">sub.16 A,#u16(B)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Aluop16_indir16">Aluop16_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x2c</td>
-							<td width="235" height="19">sub.16 A,#i16_exti8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Aluop16_16">Aluop16_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x2d</td>
-							<td width="235" height="19">sub.16 A,#exti8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMEXT,NEXT(<a href="#Aluop16">Aluop16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x2e</td>
-							<td width="235" height="19">wcpte A,(B)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">PRIV(1),TO_Z(R_B),SET_ADR(CODE_SPACE,PTB_OVERRIDE),NEXT(<a href="#Wcpte">Wcpte</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x2f</td>
-							<td width="235" height="19">sub.16 A,B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),L(R_MDR,LWORD),NEXT(<a href="#Aluop16">Aluop16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x30</td>
-							<td width="235" height="19">add.8 A,#u16(DP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Aluop8_indir16">Aluop8_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x31</td>
-							<td width="235" height="19">add.8 A,#u16(SP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Aluop8_indir16">Aluop8_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x32</td>
-							<td width="235" height="19">br A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_A),L(R_PC,LWORD),CODE,NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x33</td>
-							<td width="235" height="19">add.8 A,#u16(B)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Aluop8_indir16">Aluop8_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x34</td>
-							<td width="235" height="19">add.8 A,#i8_1</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMLO,NEXT(<a href="#Aluop8">Aluop8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x35</td>
-							<td width="235" height="19">add.16 (--A),(--B)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">DEC_TO_Z(R_A),DATA,NEXT(<a href="#Mop16">Mop16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x36</td>
-							<td width="235" height="19">add.8 A,A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_A),L(R_MDR,LWORD),NEXT(<a href="#Aluop8">Aluop8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x37</td>
-							<td width="235" height="19">add.8 A,B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),L(R_MDR,LWORD),NEXT(<a href="#Aluop8">Aluop8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x38</td>
-							<td width="235" height="19">add.16 A,#u16(DP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Aluop16_indir16">Aluop16_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x39</td>
-							<td width="235" height="19">add.16 A,#u16(SP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Aluop16_indir16">Aluop16_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x3a</td>
-							<td width="235" height="19">syscall #sys_num8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMLO,NEXT(<a href="#Syscall">Syscall</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x3b</td>
-							<td width="235" height="19">add.16 A,#u16(B)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Aluop16_indir16">Aluop16_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x3c</td>
-							<td width="235" height="19">add.16 A,#i16_exti8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Aluop16_16">Aluop16_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x3d</td>
-							<td width="235" height="19">add.16 A,#exti8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMEXT,NEXT(<a href="#Aluop16">Aluop16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x3e</td>
-							<td width="235" height="19">add.16 A,A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_A),L(R_MDR,LWORD),NEXT(<a href="#Aluop16">Aluop16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x3f</td>
-							<td width="235" height="19">add.16 A,B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),L(R_MDR,LWORD),NEXT(<a href="#Aluop16">Aluop16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x40</td>
-							<td width="235" height="19">cmp.8 A,#u16(DP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmp8_indir16">Cmp8_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x41</td>
-							<td width="235" height="19">cmp.8 A,#u16(SP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmp8_indir16">Cmp8_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x42</td>
-							<td width="235" height="19">copy C,B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),L(R_C,LWORD),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x43</td>
-							<td width="235" height="19">cmp.8 A,#u16(B)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmp8_indir16">Cmp8_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x44</td>
-							<td width="235" height="19">cmp.8 A,#i8_0</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMLO,NEXT(<a href="#Cmp8">Cmp8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x45</td>
-							<td width="235" height="19">cmp.8 A,#0</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">E_L(R_A),E_R(ER_MDR),ALU(OP_SUB,BYTE,NO_CARRY),MISC(M_SET_FLAGS),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x46</td>
-							<td width="235" height="19">xor.16 A,A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_A),L(R_MDR,LWORD),NEXT(<a href="#Aluop16">Aluop16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x47</td>
-							<td width="235" height="19">cmp.8 A,B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),L(R_MDR,LWORD),NEXT(<a href="#Cmp8">Cmp8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x48</td>
-							<td width="235" height="19">cmp.16 A,#u16(DP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmp16_indir16">Cmp16_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x49</td>
-							<td width="235" height="19">cmp.16 A,#u16(SP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmp16_indir16">Cmp16_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x4a</td>
-							<td width="235" height="19">sh0add B,A,B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_A),L(R_MDR,LWORD),NEXT(<a href="#LeaB1">LeaB1</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x4b</td>
-							<td width="235" height="19">cmp.16 A,#u16(B)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmp16_indir16">Cmp16_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x4c</td>
-							<td width="235" height="19">cmp.16 A,#i16_exti8_0</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmp16_16">Cmp16_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x4d</td>
-							<td width="235" height="19">cmp.16 A,#exti8_0</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMEXT,NEXT(<a href="#Cmp16">Cmp16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x4e</td>
-							<td width="235" height="19">cmp.16 A,#0</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">E_L(R_A),E_R(ER_MDR),ALU(OP_SUB,WORD,NO_CARRY),MISC(M_SET_FLAGS),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x4f</td>
-							<td width="235" height="19">cmp.16 A,B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),L(R_MDR,LWORD),NEXT(<a href="#Cmp16">Cmp16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x50</td>
-							<td width="235" height="19">or.8 A,#u16(DP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Aluop8_indir16">Aluop8_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x51</td>
-							<td width="235" height="19">or.8 A,#u16(SP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Aluop8_indir16">Aluop8_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x52</td>
-							<td width="235" height="19">sex A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z8(R_A),L(R_A,LWORD),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x53</td>
-							<td width="235" height="19">or.8 A,#u16(B)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Aluop8_indir16">Aluop8_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x54</td>
-							<td width="235" height="19">or.8 A,#i8_1</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMLO,NEXT(<a href="#Aluop8">Aluop8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x55</td>
-
-							<td width="235" height="19">or.16 (--A),(--B)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">DEC_TO_Z(R_A),DATA,NEXT(<a href="#Mop16">Mop16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x56</td>
-							<td width="235" height="19">br.leu #d16</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#BrNormal">BrNormal</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x57</td>
-							<td width="235" height="19">or.8 A,B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),L(R_MDR,LWORD),NEXT(<a href="#Aluop8">Aluop8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x58</td>
-							<td width="235" height="19">or.16 A,#u16(DP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Aluop16_indir16">Aluop16_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x59</td>
-							<td width="235" height="19">or.16 A,#u16(SP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Aluop16_indir16">Aluop16_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x5a</td>
-							<td width="235" height="19">sh1add A,B,A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_A),L(R_MDR,LWORD),NEXT(<a href="#LeaABA2">LeaABA2</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x5b</td>
-							<td width="235" height="19">or.16 A,#u16(B)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Aluop16_indir16">Aluop16_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x5c</td>
-							<td width="235" height="19">or.16 A,#i16_exti8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Aluop16_16">Aluop16_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x5d</td>
-							<td width="235" height="19">or.16 A,#exti8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMEXT,NEXT(<a href="#Aluop16">Aluop16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x5e</td>
-							<td width="235" height="19">br.gtu #d16</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#BrNegated">BrNegated</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x5f</td>
-							<td width="235" height="19">or.16 A,B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),L(R_MDR,LWORD),NEXT(<a href="#Aluop16">Aluop16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x60</td>
-							<td width="235" height="19">and.8 A,#u16(DP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Aluop8_indir16">Aluop8_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x61</td>
-							<td width="235" height="19">and.8 A,#u16(SP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Aluop8_indir16">Aluop8_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x62</td>
-							<td width="235" height="19">sh1add B,A,B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),L(R_MDR,LWORD),NEXT(<a href="#LeaBAB2">LeaBAB2</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x63</td>
-							<td width="235" height="19">and.8 A,#u16(B)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Aluop8_indir16">Aluop8_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x64</td>
-							<td width="235" height="19">and.8 A,#i8_1</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMLO,NEXT(<a href="#Aluop8">Aluop8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x65</td>
-							<td width="235" height="19">and.16 (--A),(--B)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">DEC_TO_Z(R_A),DATA,NEXT(<a href="#Mop16">Mop16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x66</td>
-							<td width="235" height="19">nop</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x67</td>
-							<td width="235" height="19">and.8 A,B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),L(R_MDR,LWORD),NEXT(<a href="#Aluop8">Aluop8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x68</td>
-							<td width="235" height="19">and.16 A,#u16(DP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Aluop16_indir16">Aluop16_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x69</td>
-							<td width="235" height="19">and.16 A,#u16(SP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Aluop16_indir16">Aluop16_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x6a</td>
-							<td width="235" height="19">sh1add B,B,A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_A),L(R_MDR,LWORD),NEXT(<a href="#LeaBBA2">LeaBBA2</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x6b</td>
-							<td width="235" height="19">and.16 A,#u16(B)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Aluop16_indir16">Aluop16_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x6c</td>
-							<td width="235" height="19">and.16 A,#i16_exti8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Aluop16_16">Aluop16_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x6d</td>
-							<td width="235" height="19">and.16 A,#exti8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMEXT,NEXT(<a href="#Aluop16">Aluop16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x6e</td>
-							<td width="235" height="19">strcopy</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),DATA,NEXT(<a href="#Strcopy">Strcopy</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x6f</td>
-							<td width="235" height="19">and.16 A,B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),L(R_MDR,LWORD),NEXT(<a href="#Aluop16">Aluop16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x70</td>
-							<td width="235" height="19">lea A,#u16(DP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#LdaA_16">LdaA_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x71</td>
-							<td width="235" height="19">lea A,#u16(SP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#LdaA_16">LdaA_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x72</td>
-							<td width="235" height="19">lea A,#u16(A)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#LdaA_16">LdaA_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x73</td>
-							<td width="235" height="19">lea A,#u16(B)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#LdaA_16">LdaA_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x74</td>
-							<td width="235" height="19">lea B,#u16(DP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#LdaB_16">LdaB_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x75</td>
-							<td width="235" height="19">lea B,#u16(SP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#LdaB_16">LdaB_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x76</td>
-							<td width="235" height="19">lea B,#u16(A)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#LdaB_16">LdaB_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x77</td>
-							<td width="235" height="19">lea B,#u16(B)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#LdaB_16">LdaB_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x78</td>
-							<td width="235" height="19">ld.8 A,#u8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMLO,NEXT(<a href="#LdiA8">LdiA8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x79</td>
-							<td width="235" height="19">ld.8 B,#u8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMLO,NEXT(<a href="#LdiB8">LdiB8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x7a</td>
-							<td width="235" height="19">ld.16 A,#exti8_u16</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMEXT,NEXT(<a href="#LdiA16">LdiA16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x7b</td>
-							<td width="235" height="19">ld.16 B,#exti8_u16</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMEXT,NEXT(<a href="#LdiB16">LdiB16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x7c</td>
-							<td width="235" height="19">ld.16 A,#u16</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#LdiA16_lo">LdiA16_lo</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x7d</td>
-							<td width="235" height="19">ld.16 B,#u16</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#LdiB16_lo">LdiB16_lo</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x7e</td>
-							<td width="235" height="19">adc.16 A,A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_A),L(R_MDR,LWORD),NEXT(<a href="#Adc16">Adc16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x7f</td>
-							<td width="235" height="19">adc.16 A,B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),L(R_MDR,LWORD),NEXT(<a href="#Adc16">Adc16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x80</td>
-							<td width="235" height="19">call #d16</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#CallImm">CallImm</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x81</td>
-							<td width="235" height="19">ld.16 A,#u8(SP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMLO,NEXT(<a href="#Lda16_8">Lda16_8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x82</td>
-							<td width="235" height="19">call A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_PC),L(R_MDR,LWORD),NEXT(<a href="#CallA">CallA</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x83</td>
-							<td width="235" height="19">br #d16_d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#RelBrLo">RelBrLo</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x84</td>
-							<td width="235" height="19">sbr #d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMEXT,NEXT(<a href="#RelBr">RelBr</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x85</td>
-							<td width="235" height="19">ld.16 B,#u8(SP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMLO,NEXT(<a href="#Ldb16_8">Ldb16_8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x86</td>
-							<td width="235" height="19">lea A,#u8(SP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMLO,NEXT(<a href="#LeaShort">LeaShort</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x87</td>
-							<td width="235" height="19">lea B,#u8(SP)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMLO,NEXT(<a href="#LeaShort">LeaShort</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x88</td>
-							<td width="235" height="19">copy A,MSW</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_MSW),L(R_A,LWORD),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x89</td>
-							<td width="235" height="19">br.eq #d16</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#BrNormal">BrNormal</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x8a</td>
-							<td width="235" height="19">reti</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">PRIV(1),NEXT(<a href="#Reti">Reti</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x8b</td>
-							<td width="235" height="19">trapo</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">MISC(M_TRAPO),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x8c</td>
-							<td width="235" height="19">bset.8 A,#mask8,#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMLO,NEXT(<a href="#Bset8">Bset8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x8d</td>
-							<td width="235" height="19">bclr.8 A,#mask8,#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMLO,NEXT(<a href="#Bclr8">Bclr8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x8e</td>
-							<td width="235" height="19">bset.16 A,#mask16,#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Bset16">Bset16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x8f</td>
-							<td width="235" height="19">bclr.16 A,#mask16,#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Bclr16">Bclr16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x90</td>
-							<td width="235" height="19">cmpb.eq.8 A,#u16(DP),#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmpb8_indir16">Cmpb8_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x91</td>
-							<td width="235" height="19">cmpb.eq.8 A,#u16(SP),#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmpb8_indir16">Cmpb8_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x92</td>
-							<td width="235" height="19">copy B,A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_A),L(R_B,LWORD),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x93</td>
-							<td width="235" height="19">cmpb.eq.8 A,#u16(B),#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmpb8_indir16">Cmpb8_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x94</td>
-							<td width="235" height="19">cmpb.eq.8 A,#i8_0,#d8</td>
-							<td width="10" height="13">;</td>
-							<td width="610" height="19">LDIMMLO,NEXT(<a href="#Cmpb8">Cmpb8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x95</td>
-							<td width="235" height="19">cmpb.eq.8 A,#0,#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_MDR),L(R_MDR,LWORD),NEXT(<a href="#Cmpb8">Cmpb8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x96</td>
-							<td width="235" height="19">copy C,A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_A),L(R_C,LWORD),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x97</td>
-							<td width="235" height="19">cmpb.eq.8 A,B,#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),L(R_MDR,LWORD),NEXT(<a href="#Cmpb8">Cmpb8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x98</td>
-							<td width="235" height="19">cmpb.eq.16 A,#u16(DP),#d8</td>
-							<td width="10" height="13">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmpb16_indir16">Cmpb16_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x99</td>
-							<td width="235" height="19">cmpb.eq.16 A,#u16(SP),#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmpb16_indir16">Cmpb16_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x9a</td>
-							<td width="235" height="19">copy A,B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),L(R_A,LWORD),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x9b</td>
-							<td width="235" height="19">cmpb.eq.16 A,#u16(B),#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmpb16_indir16">Cmpb16_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="13">0x9c</td>
-							<td width="235" height="19">cmpb.eq.16 A,#i16_exti8_0,#d8</td>
-							<td width="10" height="13">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmpb16_16">Cmpb16_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x9d</td>
-							<td width="235" height="19">cmpb.eq.16 A,#exti8_0,#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMEXT,NEXT(<a href="#Cmpb16">Cmpb16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x9e</td>
-							<td width="235" height="19">cmpb.eq.16 A,#0,#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_MDR),L(R_MDR,LWORD),NEXT(<a href="#Cmpb16">Cmpb16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0x9f</td>
-							<td width="235" height="19">cmpb.eq.16 A,B,#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),L(R_MDR,LWORD),NEXT(<a href="#Cmpb16">Cmpb16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xa0</td>
-							<td width="235" height="19">cmpb.lt.8 A,#u16(DP),#d8</td>
-							<td width="10" height="13">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmpb8_indir16">Cmpb8_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xa1</td>
-							<td width="235" height="19">cmpb.lt.8 A,#u16(SP),#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmpb8_indir16">Cmpb8_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xa2</td>
-							<td width="235" height="19">sh0add A,A,B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),L(R_MDR,LWORD),NEXT(<a href="#LeaA1">LeaA1</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xa3</td>
-							<td width="235" height="19">cmpb.lt.8 A,#u16(B),#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmpb8_indir16">Cmpb8_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xa4</td>
-							<td width="235" height="19">cmpb.lt.8 A,#i8_0,#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMLO,NEXT(<a href="#Cmpb8">Cmpb8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xa5</td>
-							<td width="235" height="19">cmpb.lt.8 A,#0,#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_MDR),L(R_MDR,LWORD),NEXT(<a href="#Cmpb8">Cmpb8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xa6</td>
-							<td width="235" height="19">br.lt #d16</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#BrNormal">BrNormal</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xa7</td>
-							<td width="235" height="19">cmpb.lt.8 A,B,#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),L(R_MDR,LWORD),NEXT(<a href="#Cmpb8">Cmpb8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xa8</td>
-							<td width="235" height="19">cmpb.lt.16 A,#u16(DP),#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmpb16_indir16">Cmpb16_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xa9</td>
-							<td width="235" height="19">cmpb.lt.16 A,#u16(SP),#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmpb16_indir16">Cmpb16_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xaa</td>
-							<td width="235" height="19">sh1add A,A,B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),L(R_MDR,LWORD),NEXT(<a href="#LeaAAB2">LeaAAB2</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xab</td>
-							<td width="235" height="19">cmpb.lt.16 A,#u16(B),#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmpb16_indir16">Cmpb16_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xac</td>
-							<td width="235" height="19">cmpb.lt.16 A,#i16_exti8,#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmpb16_16">Cmpb16_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xad</td>
-							<td width="235" height="19">cmpb.lt.16 A,#exti8,#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMEXT,NEXT(<a href="#Cmpb16">Cmpb16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xae</td>
-							<td width="235" height="19">br.ge #d16</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#BrNegated">BrNegated</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xaf</td>
-							<td width="235" height="19">cmpb.lt.16 A,B,#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),L(R_MDR,LWORD),NEXT(<a href="#Cmpb16">Cmpb16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xb0</td>
-							<td width="235" height="19">cmpb.le.8 A,#u16(DP),#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmpb8_indir16">Cmpb8_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xb1</td>
-							<td width="235" height="19">cmpb.le.8 A,#u16(SP),#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmpb8_indir16">Cmpb8_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xb2</td>
-							<td width="235" height="19">sex B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z8(R_B),L(R_B,LWORD),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xb3</td>
-							<td width="235" height="19">cmpb.le.8 A,#u16(B),#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmpb8_indir16">Cmpb8_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xb4</td>
-							<td width="235" height="19">cmpb.le.8 A,#i8,#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMLO,NEXT(<a href="#Cmpb8">Cmpb8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xb5</td>
-							<td width="235" height="19">br.le #d16</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#BrNormal">BrNormal</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xb6</td>
-							<td width="235" height="19">copy DP,A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_A),L(R_DP,LWORD),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xb7</td>
-							<td width="235" height="19">cmpb.le.8 A,B,#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),L(R_MDR,LWORD),NEXT(<a href="#Cmpb8">Cmpb8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xb8</td>
-							<td width="235" height="19">cmpb.le.16 A,#u16(DP),#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmpb16_indir16">Cmpb16_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xb9</td>
-							<td width="235" height="19">cmpb.le.16 A,#u16(SP),#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmpb16_indir16">Cmpb16_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xba</td>
-							<td width="235" height="19">adc.16 (--A),(--B)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">DEC_TO_Z(R_A),DATA,NEXT(<a href="#Mop16Carry">Mop16Carry</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xbb</td>
-							<td width="235" height="19">cmpb.le.16 A,#u16(B),#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmpb16_indir16">Cmpb16_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xbc</td>
-							<td width="235" height="19">cmpb.le.16 A,#i16_exti8,#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmpb16_16">Cmpb16_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xbd</td>
-							<td width="235" height="19">cmpb.le.16 A,#exti8,#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMEXT,NEXT(<a href="#Cmpb16">Cmpb16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xbe</td>
-							<td width="235" height="19">br.gt #d16</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#BrNegated">BrNegated</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xbf</td>
-							<td width="235" height="19">cmpb.le.16 A,B,#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),L(R_MDR,LWORD),NEXT(<a href="#Cmpb16">Cmpb16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xc0</td>
-							<td width="235" height="19">br.geu #d16</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#BrNegated">BrNegated</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xc1</td>
-							<td width="235" height="19">st.8 #u16_u8_10(SP),A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Sta8_16">Sta8_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xc2</td>
-							<td width="235" height="19">shl.16 A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_A),L(R_MDR,LWORD),NEXT(<a href="#Shlb16">Shla16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xc3</td>
-							<td width="235" height="19">shr.16 A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_A),MISC(M_RSHIFT),L(R_A,LWORD),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xc4</td>
-							<td width="235" height="19">shl.16 B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),L(R_MDR,LWORD),NEXT(<a href="#Shlb16">Shlb16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xc5</td>
-							<td width="235" height="19">st.8 #u16_u8_10(SP),B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Stb8_16">Stb8_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xc6</td>
-							<td width="235" height="19">shr.16 B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),MISC(M_RSHIFT),L(R_B,LWORD),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xc7</td>
-							<td width="235" height="19">xor.16 A,B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),L(R_MDR,LWORD),NEXT(<a href="#Aluop16">Aluop16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="1">0xc8</td>
-							<td width="235" height="19">copy PTB,A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">PRIV(1),TO_Z(R_A),L(R_PTB,LWORD),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xc9</td>
-							<td width="235" height="19">st.16 #u16_u8_10(SP),A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Sta16_16">Sta16_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xca</td>
-							<td width="235" height="19">copy MSW,A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">PRIV(1),NEXT(<a href="#CopyMSWA">CopyMSWA</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xcb</td>
-							<td width="235" height="19">copy SP,A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_A),L(R_SP,LWORD),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xcc</td>
-							<td width="235" height="19">xor.16 (--A),(--B)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">DEC_TO_Z(R_A),DATA,NEXT(<a href="#Mop16">Mop16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xcd</td>
-							<td width="235" height="19">st.16 #u16_u8_10(SP),B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Stb16_16">Stb16_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xce</td>
-							<td width="235" height="19">ld.16  C,#u16</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#LdiC16_lo">LdiC16_lo</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xcf</td>
-							<td width="235" height="19">br.ltu #d16</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#BrNormal">BrNormal</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xd0</td>
-							<td width="235" height="19">st.8 #u16(DP),A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Sta8_16">Sta8_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xd1</td>
-							<td width="235" height="19">st.8  #u8(SP),A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMLO,NEXT(<a href="#Sta8_8">Sta8_8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xd2</td>
-							<td width="235" height="19">st.8  #u16(A),A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Sta8_16">Sta8_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xd3</td>
-							<td width="235" height="19">st.8  #u16(B),A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Sta8_16">Sta8_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xd4</td>
-							<td width="235" height="19">st.8  #u16(DP),B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Stb8_16">Stb8_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xd5</td>
-							<td width="235" height="19">st.8  #u8(SP),B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMLO,NEXT(<a href="#Stb8_8">Stb8_8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xd6</td>
-							<td width="235" height="19">st.8  #u16(A),B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Stb8_16">Stb8_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xd7</td>
-							<td width="235" height="19">st.8 #u16(B),B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Stb8_16">Stb8_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xd8</td>
-							<td width="235" height="19">st.16  #u16(DP),A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Sta16_16">Sta16_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xd9</td>
-							<td width="235" height="19">st.16 #u8(SP),A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMLO,NEXT(<a href="#Sta16_8">Sta16_8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xda</td>
-							<td width="235" height="19">st.16 #u16(A),A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Sta16_16">Sta16_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xdb</td>
-							<td width="235" height="19">st.16 #u16(B),A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Sta16_16">Sta16_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xdc</td>
-							<td width="235" height="19">st.16 #u16(DP),B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Stb16_16">Stb16_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xdd</td>
-							<td width="235" height="19">st.16 #u8(SP),B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMLO,NEXT(<a href="#Stb16_8">Stb16_8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xde</td>
-							<td width="235" height="19">st.16 #u16(A),B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Stb16_16">Stb16_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xdf</td>
-							<td width="235" height="19">st.16 #u16(B),B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Stb16_16">Stb16_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xe0</td>
-							<td width="235" height="19">ldcode.8 A,(B)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),CODE,NEXT(<a href="#Ldcode8">Ldcode8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xe1</td>
-							<td width="235" height="19">copy A,DP</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_DP),L(R_A,LWORD),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xe2</td>
-							<td width="235" height="19">ld.16 C,#exti8_u16</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMEXT,NEXT(<a href="#LdiC16">LdiC16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xe3</td>
-							<td width="235" height="19">memcopy4</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">INC2_TO_Z(R_B),DATA,NEXT(<a href="#Mcpy4">Mcpy4</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xe4</td>
-							<td width="235" height="19">enter #fsize16_8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Enter">Enter</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xe5</td>
-							<td width="235" height="19">enter #fsize8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">NEG1_TO_Z,LATCH(R_MDR),NEXT(<a href="#Enter">Enter</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xe6</td>
-							<td width="235" height="19">vshl.16 A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_A),L(R_MDR,LWORD),NEXT(<a href="#Vshl">Vshl</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xe7</td>
-							<td width="235" height="19">vshl.16 B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),L(R_MDR,LWORD),NEXT(<a href="#Vshl">Vshl</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xe8</td>
-							<td width="235" height="19">memcopy</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">COMPARE_0(R_C),MISC(M_SET_FLAGS),NEXT(<a href="#Bcopy">Bcopy</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xe9</td>
-							<td width="235" height="19">tosys</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">PRIV(1),COMPARE_0(R_C),MISC(M_SET_FLAGS),NEXT(<a href="#ToSys">ToSys</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xea</td>
-							<td width="235" height="19">fromsys</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">PRIV(1),COMPARE_0(R_C),MISC(M_SET_FLAGS),NEXT(<a href="#FromSys">FromSys</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xeb</td>
-							<td width="235" height="19">ldclr.8 A,(B)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),DATA,NEXT(<a href="#LdClr">LdClr</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xec</td>
-							<td width="235" height="19">wdpte A,(B)</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">PRIV(1),TO_Z(R_B),SET_ADR(DATA_SPACE,PTB_OVERRIDE),NEXT(<a href="#Wdpte">Wdpte</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xed</td>
-							<td width="235" height="19">sbc.16 A,B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),L(R_MDR,LWORD),NEXT(<a href="#Sbc16">Sbc16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xee</td>
-							<td width="235" height="19">vshr.16 A</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_A),L(R_MDR,LWORD),NEXT(<a href="#Vshr">Vshr</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xef</td>
-							<td width="235" height="19">vshr.16 B</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),L(R_MDR,LWORD),NEXT(<a href="#Vshr">Vshr</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xf0</td>
-							<td width="235" height="19">cmpb.ne.8 A,#u16(DP),#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmpb8_indir16">Cmpb8_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xf1</td>
-							<td width="235" height="19">cmpb.ne.8 A,#u16(SP),#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmpb8_indir16">Cmpb8_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xf2</td>
-							<td width="235" height="19">copy A,C</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_C),L(R_A,LWORD),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xf3</td>
-							<td width="235" height="19">cmpb.ne.8 A,#u16(B),#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmpb8_indir16">Cmpb8_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xf4</td>
-							<td width="235" height="19">cmpb.ne.8 A,#i8_0,#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMLO,NEXT(<a href="#Cmpb8">Cmpb8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xf5</td>
-							<td width="235" height="19">cmpb.ne.8 A,#0,#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_MDR),L(R_MDR,LWORD),NEXT(<a href="#Cmpb8">Cmpb8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xf6</td>
-							<td width="235" height="19">copy A,SP</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_SP),L(R_A,LWORD),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xf7</td>
-							<td width="235" height="19">cmpb.ne.8 A,B,#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),L(R_MDR,LWORD),NEXT(<a href="#Cmpb8">Cmpb8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xf8</td>
-							<td width="235" height="19">cmpb.ne.16 A,#u16(DP),#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmpb16_indir16">Cmpb16_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xf9</td>
-							<td width="235" height="19">cmpb.ne.16 A,#u16(SP),#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmpb16_indir16">Cmpb16_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xfa</td>
-							<td width="235" height="19">bkpt</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">MISC(M_BKPT),NEXT(<a href="#Unreachable">Unreachable</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xfb</td>
-							<td width="235" height="19">cmpb.ne.16 A,#u16(B),#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmpb16_indir16">Cmpb16_indir16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xfc</td>
-							<td width="235" height="19">cmpb.ne.16 A,#i16_exti8_0,#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMHI,NEXT(<a href="#Cmpb16_16">Cmpb16_16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xfd</td>
-							<td width="235" height="19">cmpb.ne.16 A,#exti8_0,#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">LDIMMEXT,NEXT(<a href="#Cmpb16">Cmpb16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xfe</td>
-							<td width="235" height="19">cmpb.ne.16 A,#0,#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_MDR),L(R_MDR,LWORD),NEXT(<a href="#Cmpb16">Cmpb16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="33" height="19">0xff</td>
-							<td width="235" height="19">cmpb.ne.16 A,B,#d8</td>
-							<td width="10" height="19">;</td>
-							<td width="610" height="19">TO_Z(R_B),L(R_MDR,LWORD),NEXT(<a href="#Cmpb16">Cmpb16</a>)</td>
-
-						</tr>
-
-					</table>
-
-						<h4>Top half of PROM - continuation microcode.</h4>
-
-    <table border="1" width="965" height="6380" id="table2" bordercolordark="#003399" bordercolorlight="#003399">
-
-						<tr>
-
-							<td width="41" height="19">0x100</td>
-							<td width="122" height="19"><a name="Fetch">Fetch</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">FETCH_OP</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x101</td>
-							<td width="122" height="19"><a name="IRQ5">IRQ5</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_MAR),MISC(M_COMMIT),NEXT(<a href="#Fault">Fault</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x102</td>
-							<td width="122" height="19"><a name="IRQ4">IRQ4</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_MAR),MISC(M_COMMIT),NEXT(<a href="#Fault">Fault</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x103</td>
-							<td width="122" height="19"><a name="IRQ3">IRQ3</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_MAR),MISC(M_COMMIT),NEXT(<a href="#Fault">Fault</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x104</td>
-							<td width="122" height="19"><a name="IRQ2">IRQ2</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_MAR),MISC(M_COMMIT),NEXT(<a href="#Fault">Fault</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x105</td>
-							<td width="122" height="19"><a name="IRQ1">IRQ1</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_MAR),MISC(M_COMMIT),NEXT(<a href="#Fault">Fault</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x106</td>
-							<td width="122" height="19"><a name="IRQ0">IRQ0</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_MAR),MISC(M_COMMIT),NEXT(<a href="#Fault">Fault</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x107</td>
-							<td width="122" height="19"><a name="DMA_req">DMA_req</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">MISC(M_DMA_ACK),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x108</td>
-							<td width="122" height="19"><a name="Fault_syscall">Fault_syscall</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_MAR),MISC(M_COMMIT),NEXT(<a href="#Fault">Fault</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x109</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19"></td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x10a</td>
-							<td width="122" height="19"><a name="Fault_ovflo">Fault_ovflo</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_MAR),L(R_PC,LWORD),NEXT(<a href="#Fault">Fault</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x10b</td>
-							<td width="122" height="19"><a name="Fault_priv">Fault_priv</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_MAR),L(R_PC,LWORD),NEXT(<a href="#Fault">Fault</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x10c</td>
-							<td width="122" height="19"><a name="Fault_bkpt">Fault_bkpt</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_MAR),L(R_PC,LWORD),NEXT(<a href="#Fault">Fault</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x10d</td>
-							<td width="122" height="19"><a name="Fault_nw">Fault_nw</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_MAR),L(R_PC,LWORD),NEXT(<a href="#Fault">Fault</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x10e</td>
-							<td width="122" height="19"><a name="Fault_np">Fault_np</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_MAR),L(R_PC,LWORD),NEXT(<a href="#Fault">Fault</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x10f</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19"></td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x110</td>
-							<td width="122" height="19"><a name="Aluop8_indir">Aluop8_indir</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">GEN_ADDR(R_IR_BASE),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x111</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDLO,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x112</td>
-							<td width="122" height="19"><a name="Aluop8">Aluop8</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">E_L(R_A),E_R(ER_MDR),ALU(OP_IR13,BYTE,NO_CARRY),L(R_A,LBYTE),MISC(M_SET_FLAGS),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x113</td>
-							<td width="122" height="19"><a name="Aluop8_indir16">Aluop8_indir16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMLO,NEXT(<a href="#Aluop8_indir">Aluop8_indir</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x114</td>
-							<td width="122" height="19"><a name="Aluop16_indir">Aluop16_indir</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">GEN_ADDR(R_IR_BASE),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x115</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDHI,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x116</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDLO,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x117</td>
-							<td width="122" height="19"><a name="Aluop16">Aluop16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">E_L(R_A),E_R(ER_MDR),ALU(OP_IR13,WORD,NO_CARRY),L(R_A,LWORD),MISC(M_SET_FLAGS),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x118</td>
-							<td width="122" height="19"><a name="Aluop16_indir16">Aluop16_indir16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMLO,NEXT(<a href="#Aluop16_indir">Aluop16_indir</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x119</td>
-							<td width="122" height="19"><a name="Cmp8_indir">Cmp8_indir</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">GEN_ADDR(R_IR_BASE),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x11a</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDLO,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x11b</td>
-							<td width="122" height="19"><a name="Cmp8">Cmp8</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">E_L(R_A),E_R(ER_MDR),ALU(OP_SUB,BYTE,NO_CARRY),MISC(M_SET_FLAGS),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x11c</td>
-							<td width="122" height="19"><a name="Cmp8_indir16">Cmp8_indir16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMLO,NEXT(<a href="#Cmp8_indir">Cmp8_indir</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x11d</td>
-							<td width="122" height="19"><a name="Cmp16_indir">Cmp16_indir</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">GEN_ADDR(R_IR_BASE),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x11e</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDHI,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x11f</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDLO,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x120</td>
-							<td width="122" height="19"><a name="Cmp16">Cmp16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">E_L(R_A),E_R(ER_MDR),ALU(OP_SUB,WORD,NO_CARRY),MISC(M_SET_FLAGS),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x121</td>
-							<td width="122" height="19"><a name="Cmp16_indir16">Cmp16_indir16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMLO,NEXT(<a href="#Cmp16_indir">Cmp16_indir</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x122</td>
-							<td width="122" height="19"><a name="Cmpb8_indir">Cmpb8_indir</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">GEN_ADDR(R_IR_BASE),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x123</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDLO,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x124</td>
-							<td width="122" height="19"><a name="Cmpb8">Cmpb8</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">E_L(R_A),E_R(ER_MDR),ALU(OP_SUB,BYTE,NO_CARRY),MISC(M_SET_FLAGS),NEXT(<a href="#CheckBr">CheckBr</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x125</td>
-							<td width="122" height="19"><a name="Cmpb8_indir16">Cmpb8_indir16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMLO,NEXT(<a href="#Cmpb8_indir">Cmpb8_indir</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x126</td>
-							<td width="122" height="19"><a name="Cmpb16_indir">Cmpb16_indir</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">GEN_ADDR(R_IR_BASE),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x127</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDHI,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x128</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDLO,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x129</td>
-							<td width="122" height="19"><a name="Cmpb16">Cmpb16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">E_L(R_A),E_R(ER_MDR),ALU(OP_SUB,WORD,NO_CARRY),MISC(M_SET_FLAGS),NEXT(<a href="#CheckBr">CheckBr</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x12a</td>
-							<td width="122" height="19"><a name="Cmpb16_indir16">Cmpb16_indir16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMLO,NEXT(<a href="#Cmpb16_indir">Cmpb16_indir</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x12b</td>
-							<td width="122" height="19"><a name="CheckBr">CheckBr</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMEXT,CBR(B_NORMAL,<a href="#TakenBr">TakenBr</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x12c</td>
-							<td width="122" height="19"><a name="TakenBr">TakenBr</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">E_L(R_PC),E_R(ER_MDR),ALU(OP_ADD,WORD,NO_CARRY),L(R_PC,LWORD),CODE,NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x12d</td>
-							<td width="122" height="19"><a name="BrNormal">BrNormal</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMLO,CBR(B_NORMAL,<a href="#TakenBr">TakenBr</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x12e</td>
-							<td width="122" height="19"><a name="BrNegated">BrNegated</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMLO,CBR(B_NEGATED,<a href="#TakenBr">TakenBr</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x12f</td>
-							<td width="122" height="19"><a name="Bset8">Bset8</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">E_L(R_A),E_R(ER_MDR),ALU(OP_AND,BYTE,NO_CARRY),MISC(M_SET_FLAGS),NEXT(<a href="#CheckBrNeg">CheckBrNeg</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="13">0x130</td>
-							<td width="122" height="19"><a name="CheckBrNeg">CheckBrNeg</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMEXT,CBR(B_NEGATED,<a href="#TakenBr">TakenBr</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x131</td>
-							<td width="122" height="19"><a name="Bclr8">Bclr8</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">E_L(R_A),E_R(ER_MDR),ALU(OP_AND,BYTE,NO_CARRY),MISC(M_SET_FLAGS),NEXT(<a href="#CheckBr">CheckBr</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x132</td>
-							<td width="122" height="19"><a name="Bset16">Bset16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMLO,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x133</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">E_L(R_A),E_R(ER_MDR),ALU(OP_AND,WORD,NO_CARRY),MISC(M_SET_FLAGS),NEXT(<a href="#CheckBrNeg">CheckBrNeg</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x134</td>
-							<td width="122" height="19"><a name="Bclr16">Bclr16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMLO,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x135</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">E_L(R_A),E_R(ER_MDR),ALU(OP_AND,WORD,NO_CARRY),MISC(M_SET_FLAGS),NEXT(<a href="#CheckBr">CheckBr</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x136</td>
-							<td width="122" height="19"><a name="Push16">Push16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">DEC_TO_Z(R_SP),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x137</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">WRITELO,DEC_TO_Z(R_MAR),DATA,L(R_SP,LWORD),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x138</td>
-							<td width="122" height="19"><a name="Whi">Whi</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">WRITEHI,TO_Z(R_PC),CODE,NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x139</td>
-							<td width="122" height="19"><a name="Pop16">Pop16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDHI,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x13a</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">READLO,INC_TO_Z(R_MAR),L(R_SP,LWORD),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x13b</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_MDR),L(R_IR_REG,LWORD),NEXT(<a href="#PCtoMAR">PCtoMAR</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x13c</td>
-							<td width="122" height="19"><a name="Lda8_8">Lda8_8</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">GEN_ADDR(R_IR_BASE),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x13d</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDLO,NEXT(<a href="#LdiA8">LdiA8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x13e</td>
-							<td width="122" height="19"><a name="Lda8_16">Lda8_16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMLO,NEXT(<a href="#Lda8_8">Lda8_8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x13f</td>
-							<td width="122" height="19"><a name="Ldb8_8">Ldb8_8</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">GEN_ADDR(R_IR_BASE),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x140</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDLO,NEXT(<a href="#LdiB8">LdiB8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x141</td>
-							<td width="122" height="19"><a name="Ldb8_16">Ldb8_16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMLO,NEXT(<a href="#Ldb8_8">Ldb8_8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x142</td>
-							<td width="122" height="19"><a name="Lda16_8">Lda16_8</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">GEN_ADDR(R_IR_BASE),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x143</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDHI,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x144</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDLO,NEXT(<a href="#LdiA16">LdiA16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x145</td>
-							<td width="122" height="19"><a name="Lda16_16">Lda16_16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMLO,NEXT(<a href="#Lda16_8">Lda16_8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x146</td>
-							<td width="122" height="19"><a name="Ldb16_8">Ldb16_8</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">GEN_ADDR(R_IR_BASE),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x147</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDHI,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x148</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDLO,NEXT(<a href="#LdiB16">LdiB16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x149</td>
-							<td width="122" height="19"><a name="Ldb16_16">Ldb16_16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMLO,NEXT(<a href="#Ldb16_8">Ldb16_8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x14a</td>
-							<td width="122" height="19"><a name="Sta8_8">Sta8_8</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">GEN_ADDR(R_IR_BASE),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x14b</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_A),L(R_MDR,LWORD),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x14c</td>
-							<td width="122" height="19"><a name="StaLo">StaLo</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">STLO,NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x14d</td>
-							<td width="122" height="19"><a name="Sta8_16">Sta8_16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMLO,NEXT(<a href="#Sta8_8">Sta8_8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x14e</td>
-							<td width="122" height="19"><a name="Sta16_8">Sta16_8</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">GEN_ADDR(R_IR_BASE),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x14f</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_A),L(R_MDR,LWORD),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x150</td>
-							<td width="122" height="19"><a name="Shi">Shi</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">STHI,NEXT(<a href="#StaLo">StaLo</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x151</td>
-							<td width="122" height="19"><a name="Sta16_16">Sta16_16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMLO,NEXT(<a href="#Sta16_8">Sta16_8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x152</td>
-							<td width="122" height="19"><a name="Stb8_8">Stb8_8</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">GEN_ADDR(R_IR_BASE),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x153</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_B),L(R_MDR,LWORD),NEXT(<a href="#StaLo">StaLo</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x154</td>
-							<td width="122" height="19"><a name="Stb8_16">Stb8_16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMLO,NEXT(<a href="#Stb8_8">Stb8_8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x155</td>
-							<td width="122" height="19"><a name="Stb16_8">Stb16_8</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">GEN_ADDR(R_IR_BASE),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x156</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_B),L(R_MDR,LWORD),NEXT(<a href="#Shi">Shi</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x157</td>
-							<td width="122" height="19"><a name="Stb16_16">Stb16_16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMLO,NEXT(<a href="#Stb16_8">Stb16_8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x158</td>
-							<td width="122" height="19"><a name="Sbc16">Sbc16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">E_L(R_A),E_R(ER_MDR),ALU(OP_SUB,WORD,CARRY_IN),L(R_A,LWORD),MISC(M_SET_FLAGS),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x159</td>
-							<td width="122" height="19"><a name="Adc16">Adc16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">E_L(R_A),E_R(ER_MDR),ALU(OP_ADD,WORD,CARRY_IN),L(R_A,LWORD),MISC(M_SET_FLAGS),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x15a</td>
-							<td width="122" height="19"><a name="LdaA_16">LdaA_16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMLO,NEXT(<a href="#LdaA">LdaA</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x15b</td>
-							<td width="122" height="19"><a name="LdaA">LdaA</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">GEN_ADDR(R_IR_BASE),L(R_A,LWORD),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x15c</td>
-							<td width="122" height="19"><a name="LdaB_16">LdaB_16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMLO,NEXT(<a href="#LdaB">LdaB</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x15d</td>
-							<td width="122" height="19"><a name="LdaB">LdaB</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">GEN_ADDR(R_IR_BASE),L(R_B,LWORD),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x15e</td>
-							<td width="122" height="19"><a name="LdiA8">LdiA8</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_MDR),L(R_A,LBYTE),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x15f</td>
-							<td width="122" height="19"><a name="LdiB8">LdiB8</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_MDR),L(R_B,LBYTE),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x160</td>
-							<td width="122" height="19"><a name="LdiA16_lo">LdiA16_lo</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMLO,NEXT(<a href="#LdiA16">LdiA16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x161</td>
-							<td width="122" height="19"><a name="LdiA16">LdiA16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_MDR),L(R_A,LWORD),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x162</td>
-							<td width="122" height="19"><a name="LdiB16_lo">LdiB16_lo</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMLO,NEXT(<a href="#LdiB16">LdiB16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x163</td>
-							<td width="122" height="19"><a name="LdiB16">LdiB16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_MDR),L(R_B,LWORD),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x164</td>
-							<td width="122" height="19"><a name="LdiC16_lo">LdiC16_lo</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMLO,NEXT(<a href="#LdiC16">LdiC16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x165</td>
-							<td width="122" height="19"><a name="LdiC16">LdiC16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_MDR),L(R_C,LWORD),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x166</td>
-							<td width="122" height="19"><a name="RelBrLo">RelBrLo</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMLO,NEXT(<a href="#RelBr">RelBr</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x167</td>
-							<td width="122" height="19"><a name="RelBr">RelBr</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">GEN_ADDR(R_PC),L(R_PC,LWORD),CODE,NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x168</td>
-							<td width="122" height="19"><a name="CallImm">CallImm</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMLO,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x169</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">GEN_ADDR(R_PC),L(R_PC,LWORD),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x16a</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">E_R(ER_MDR),E_L(R_PC),ALU(OP_SUB,WORD,NO_CARRY),L(R_MDR,LWORD),NEXT(<a href="#Push16">Push16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x16b</td>
-							<td width="122" height="19"><a name="CallA">CallA</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">DEC_TO_Z(R_SP),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x16c</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">WRITELO,DEC_TO_Z(R_MAR),DATA,L(R_SP,LWORD),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x16d</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">WRITEHI,TO_Z(R_A),L(R_PC,LWORD),CODE,NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x16e</td>
-							<td width="122" height="19"><a name="LdClr">LdClr</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">READLO,NEXT(<a href="#FALLTHRU">FALLTHRU</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x16f</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_MDR),L(R_A,LBYTE),NEXT(<a href="#Whi">Whi</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x170</td>
-							<td width="122" height="19"><a name="Wcpte">Wcpte</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">E_L(R_A),MISC(M_LPTE),NEXT(<a href="#PCtoMAR">PCtoMAR</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x171</td>
-							<td width="122" height="19"><a name="Enter">Enter</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMLO,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x172</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">GEN_ADDR(R_SP),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x173</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_SP),L(R_MDR,LWORD),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x174</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">DEC_TO_Z(R_MAR),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x175</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">WRITELO,DEC_TO_Z(R_MAR),DATA,L(R_SP,LWORD),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x176</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">WRITEHI,TO_Z(R_MAR),L(R_SP,LWORD),NEXT(<a href="#PCtoMAR">PCtoMAR</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x177</td>
-							<td width="122" height="19"><a name="Bcopy">Bcopy</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">CBR(B_NEGATED,FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x178</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_B),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x179</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="1">;</td>
-							<td width="656" height="1">READLO,TO_Z(R_A),DATA,NEXT(<a href="#Bcopy0">Bcopy0</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x17a</td>
-							<td width="122" height="19"><a name="ToSys">ToSys</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">PRIV(1),CBR(B_NEGATED,FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x17b</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19"> ;</td>
-							<td width="656" height="19">TO_Z(R_B),SET_ADR(DATA_SPACE,PTB_OVERRIDE),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x17c</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="1">;</td>
-							<td width="656" height="1">READLO,TO_Z(R_A),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x17d</td>
-							<td width="122" height="19"><a name="Bcopy0">Bcopy0</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">WRITELO,INC_TO_Z(R_MAR),L(R_A,LWORD),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x17e</td>
-							<td width="122" height="19"><a name="Bcopy1">Bcopy1</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">INC_TO_Z(R_B),L(R_B,LWORD),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x17f</td>
-							<td width="122" height="19"><a name="Bcopy2">Bcopy2</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">DEC_TO_Z(R_C),L(R_C,LWORD),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x180</td>
-							<td width="122" height="19"><a name="BackupPC">BackupPC</a></td>
-							<td width="10" height="13">;</td>
-							<td width="656" height="19">DEC_TO_Z(R_PC),L(R_PC,LWORD),CODE,NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x181</td>
-							<td width="122" height="19"><a name="FromSys">FromSys</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">PRIV(1),CBR(B_NEGATED,FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x182</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_B),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x183</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="1">;</td>
-							<td width="656" height="1">READLO,TO_Z(R_A),SET_ADR(DATA_SPACE,PTB_OVERRIDE),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x184</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">WRITELO,INC_TO_Z(R_MAR),L(R_A,LWORD),NEXT(<a href="#Bcopy1">Bcopy1</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x185</td>
-							<td width="122" height="19"><a name="Fault">Fault</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_MDR(R_MSW),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x186</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="21">;</td>
-							<td width="656" height="19">ZERO_TO_Z,MISC(M_LEI),LMODE(1),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x187</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">DEC_TO_Z(R_SSP),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x188</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">PUSHLO,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x189</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">PUSHHI,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x18a</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_MDR(R_SP),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x18b</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">PUSHLO,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x18c</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">PUSHHI,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x18d</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_MDR(R_TPC),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x18e</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">PUSHLO,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x18f</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">PUSHHI,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x190</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_MDR(R_A),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x191</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">PUSHLO,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x192</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">PUSHHI,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x193</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_MDR(R_B),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x194</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">PUSHLO,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x195</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">PUSHHI,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x196</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="22">;</td>
-							<td width="656" height="19">TO_MDR(R_C),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x197</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">PUSHLO,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x198</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">PUSHHI,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="21">0x199</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_MDR(R_DP),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x19a</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">PUSHLO,L(R_SP,LWORD),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x19b</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">PUSHHI,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x19c</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_PC),L(R_A,LWORD),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x19d</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_FCODE),DATA,L(R_C,LWORD),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x19e</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">POPHI,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x19f</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">POPLO,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1a0</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">ZERO_TO_Z,L(R_DP,LWORD),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1a1</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">FROM_MDR(R_PC),CODE,MISC(M_CLR_TRAP),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1a2</td>
-							<td width="122" height="19"><a name="Reti">Reti</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_SP),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1a3</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">POPHI,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1a4</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">POPLO,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1a5</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">FROM_MDR(R_DP),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1a6</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">POPHI,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1a7</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">POPLO,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1a8</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="23">;</td>
-							<td width="656" height="19">FROM_MDR(R_C),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="22">0x1a9</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">POPHI,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1aa</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">POPLO,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1ab</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">FROM_MDR(R_B),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1ac</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">POPHI,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1ad</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">POPLO,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1ae</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">FROM_MDR(R_A),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1af</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">POPHI,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1b0</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">POPLO,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1b1</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">FROM_MDR(R_PC),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1b2</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">POPHI,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1b3</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">POPLO,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1b4</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_MDR),MISC(M_COMMIT),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1b5</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">POPHI,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1b6</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">READLO,INC_TO_Z(R_MAR),L(R_SP,LWORD),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1b7</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_MDR),L(R_MSW,LWORD),LMODE(1),LPAGING(1),MISC(M_LEI),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1b8</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="17">;</td>
-							<td width="656" height="19">TO_Z(R_TPC),L(R_SP,LWORD),NEXT(<a href="#PCtoMAR">PCtoMAR</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="23">0x1b9</td>
-							<td width="122" height="19"><a name="Syscall">Syscall</a></td>
-							<td width="10" height="17">;</td>
-							<td width="656" height="19">TO_Z(R_MDR),L(R_A,LWORD),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1ba</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">MISC(M_SYSCALL),NEXT(<a href="#Unreachable">Unreachable</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1bb</td>
-							<td width="122" height="19"><a name="Ldcode8">Ldcode8</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDLO,NEXT(<a href="#LdiA8">LdiA8</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1bc</td>
-							<td width="122" height="19"><a name="Wdpte">Wdpte</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">E_L(R_A),MISC(M_LPTE),NEXT(<a href="#PCtoMAR">PCtoMAR</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1bd</td>
-							<td width="122" height="19"><a name="Shlb16">Shlb16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">E_L(R_B),E_R(ER_MDR),ALU(OP_ADD,WORD,NO_CARRY),L(R_B,LWORD),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1be</td>
-							<td width="122" height="19"><a name="Shla16">Shla16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">E_L(R_A),E_R(ER_MDR),ALU(OP_ADD,WORD,NO_CARRY),L(R_A,LWORD),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1bf</td>
-							<td width="122" height="19"><a name="Aluop16_16">Aluop16_16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMLO,NEXT(<a href="#Aluop16">Aluop16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1c0</td>
-							<td width="122" height="19"><a name="Cmpb16_16">Cmpb16_16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMLO,NEXT(<a href="#Cmpb16">Cmpb16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1c1</td>
-							<td width="122" height="19"><a name="Cmp16_16">Cmp16_16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">LDIMMLO,NEXT(<a href="#Cmp16">Cmp16</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1c2</td>
-							<td width="122" height="19"><a name="PCtoMAR">PCtoMAR</a></td>
-							<td width="8" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_PC),CODE,NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1c3</td>
-							<td width="122" height="19"><a name="Vshl">Vshl</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">COMPARE_0(R_C),MISC(M_SET_FLAGS),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1c4</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">CBR(B_NEGATED,FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1c5</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">COMPARE_0(R_MDR),MISC(M_SET_FLAGS),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1c6</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">CBR(B_NEGATED,FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1c7</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">E_L(R_MDR),E_R(ER_MDR),ALU(OP_ADD,WORD,NO_CARRY),L(R_IR_REG,LWORD),NEXT(<a href="#Bcopy2">Bcopy2</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1c8</td>
-							<td width="122" height="19"><a name="Vshr">Vshr</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">COMPARE_0(R_C),MISC(M_SET_FLAGS),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="1">0x1c9</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="13">;</td>
-							<td width="656" height="19">CBR(B_NEGATED,FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1ca</td>
-							<td width="122" height="19"></td>
-							<td width="8" height="19">;</td>
-							<td width="656" height="19">COMPARE_0(R_MDR),MISC(M_SET_FLAGS),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1cb</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">CBR(B_NEGATED,FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1cc</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_MDR),MISC(M_RSHIFT),L(R_IR_REG,LWORD),NEXT(<a href="#Bcopy2">Bcopy2</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1cd</td>
-							<td width="122" height="19"><a name="LeaAAB2">LeaAAB2</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">E_R(ER_MDR),E_L(R_MDR),ALU(OP_ADD,WORD,NO_CARRY),L(R_MDR,LWORD),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1ce</td>
-							<td width="122" height="19"><a name="LeaA1">LeaA1</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">E_R(ER_MDR),E_L(R_A),ALU(OP_ADD,WORD,NO_CARRY),L(R_A,LWORD),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1cf</td>
-							<td width="122" height="19"><a name="LeaBBA2">LeaBBA2</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">E_R(ER_MDR),E_L(R_MDR),ALU(OP_ADD,WORD,NO_CARRY),L(R_MDR,LWORD),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1d0</td>
-							<td width="122" height="19"><a name="LeaB1">LeaB1</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">E_R(ER_MDR),E_L(R_B),ALU(OP_ADD,WORD,NO_CARRY),L(R_B,LWORD),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1d1</td>
-							<td width="122" height="19"><a name="LeaABA2">LeaABA2</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">E_R(ER_MDR),E_L(R_MDR),ALU(OP_ADD,WORD,NO_CARRY),L(R_MDR,LWORD),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="23">0x1d2</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">E_R(ER_MDR),E_L(R_B),ALU(OP_ADD,WORD,NO_CARRY),L(R_A,LWORD),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1d3</td>
-							<td width="122" height="19"><a name="LeaBAB2">LeaBAB2</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">E_R(ER_MDR),E_L(R_MDR),ALU(OP_ADD,WORD,NO_CARRY),L(R_MDR,LWORD),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1d4</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">E_R(ER_MDR),E_L(R_A),ALU(OP_ADD,WORD,NO_CARRY),L(R_B,LWORD),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1d5</td>
-							<td width="122" height="19"><a name="CopyMSWA">CopyMSWA</a></td>
-							<td width="8" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_A),L(R_MSW,LWORD),LMODE(1),LPAGING(1),MISC(M_LEI),NEXT(<a href="#PCtoMAR">PCtoMAR</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1d6</td>
-							<td width="122" height="19"><a name="Strcopy">Strcopy</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">READLO,TO_Z(R_A),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1d7</td>
-							<td width="122" height="19"></td>
-							<td width="8" height="19">;</td>
-							<td width="656" height="19">WRITELO,COMPARE8_0(R_MDR),MISC(M_SET_FLAGS),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1d8</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_PC),CODE,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1d9</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">INC_TO_Z(R_A),L(R_A,LWORD),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1da</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">INC_TO_Z(R_B),L(R_B,LWORD),CBR(B_NEGATED,<a href="#BackupPC">BackupPC</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1db</td>
-							<td width="122" height="19"><a name="LeaShort">LeaShort</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">GEN_ADDR(R_SP),L(R_IR_REG,LWORD),NEXT(<a href="#Fetch">Fetch</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1dc</td>
-							<td width="122" height="19"><a name="Mcpy4">Mcpy4</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">READHI,INC_TO_Z(R_MAR),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1dd</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">READLO,TO_Z(R_B),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1de</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_MDR),L(R_C,LWORD),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1df</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">READHI,INC_TO_Z(R_MAR),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1e0</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">READLO,TO_Z(R_A),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1e1</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">WRITEHI,INC_TO_Z(R_MAR),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1e2</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">WRITELO,INC_TO_Z(R_MAR),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1e3</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">TO_Z(R_C),L(R_MDR,LWORD),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1e4</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">WRITEHI,INC_TO_Z(R_MAR),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1e5</td>
-							<td width="122" height="19"></td>
-							<td width="8" height="19">;</td>
-							<td width="656" height="19">WRITELO,INC_TO_Z(R_MAR),L(R_A,LWORD),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="13">0x1e6</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">INC2_TO_Z(R_B),L(R_B,LWORD),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1e7</td>
-							<td width="122" height="19"></td>
-							<td width="8" height="19">;</td>
-							<td width="656" height="19">INC2_TO_Z(R_B),L(R_B,LWORD),NEXT(<a href="#PCtoMAR">PCtoMAR</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1e8</td>
-							<td width="122" height="19"><a name="Mop16">Mop16</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">READLO,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1e9</td>
-							<td width="122" height="19"></td>
-							<td width="8" height="19">;</td>
-							<td width="656" height="19">WRITELO,DEC_TO_Z(R_MAR),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1ea</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">READHI,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1eb</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">WRITEHI,TO_Z(R_MDR),L(R_C,LWORD),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1ec</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">DEC_TO_Z(R_B),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1ed</td>
-							<td width="122" height="19"></td>
-							<td width="8" height="19">;</td>
-							<td width="656" height="19">READLO,DEC_TO_Z(R_MAR),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1ee</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">READHI,TO_Z(R_MAR),L(R_B,LWORD),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1ef</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">E_L(R_C),E_R(ER_MDR),ALU(OP_IR13,WORD,NO_CARRY),L(R_MDR,LWORD),MISC(M_SET_FLAGS),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1f0</td>
-							<td width="122" height="19"><a name="Mop16a">Mop16a</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">DEC_TO_Z(R_A),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1f1</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">WRITELO,DEC_TO_Z(R_MAR),DATA,L(R_A,LWORD),NEXT(<a href="#Whi">Whi</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1f2</td>
-							<td width="122" height="19"><a name="Mop16Carry">Mop16Carry</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">READLO,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1f3</td>
-							<td width="122" height="19"></td>
-							<td width="8" height="19">;</td>
-							<td width="656" height="19">WRITELO,DEC_TO_Z(R_MAR),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1f4</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">READHI,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1f5</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">WRITEHI,TO_Z(R_MDR),L(R_C,LWORD),READHI,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1f6</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">DEC_TO_Z(R_B),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1f7</td>
-							<td width="122" height="19"></td>
-							<td width="8" height="19">;</td>
-							<td width="656" height="19">READLO,DEC_TO_Z(R_MAR),DATA,NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1f8</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">READHI,TO_Z(R_MAR),L(R_B,LWORD),NEXT(FALLTHRU)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1f9</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">E_L(R_C),E_R(ER_MDR),ALU(OP_IR13,WORD,CARRY_IN),L(R_MDR,LWORD),MISC(M_SET_FLAGS),NEXT(<a href="#Mop16a">Mop16a</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1fa</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19"></td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1fb</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19"></td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1fc</td>
-							<td width="235" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19"></td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1fd</td>
-							<td width="122" height="19"></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19"></td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1fe</td>
-							<td width="122" height="19"><a name="Unreachable">Unreachable</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19">NEXT(<a href="#Unreachable">Unreachable</a>)</td>
-
-						</tr>
-
-						<tr>
-
-							<td width="41" height="19">0x1ff</td>
-							<td width="122" height="19"><a name="UNUSABLE">UNUSABLE</a></td>
-							<td width="10" height="19">;</td>
-							<td width="656" height="19"></td>
-
-						</tr>
-
-</table>
-
+Bottom half of PROM -  (starting point of each instruction, using opcode as direct index)
+0x00 	halt 	; 	MISC(M_HALT),DEC_TO_Z(R_PC),L(R_PC,LWORD),CODE,NEXT(Fetch)
+0x01 	ld.8 A,#u16_u8_10(SP) 	; 	LDIMMHI,NEXT(Lda8_16)
+0x02 	push C 	; 	TO_Z(R_C),L(R_MDR,LWORD),NEXT(Push16)
+0x03 	push PC 	; 	TO_Z(R_TPC),L(R_MDR,LWORD),NEXT(Push16)
+0x04 	push DP 	; 	TO_Z(R_DP),L(R_MDR,LWORD),NEXT(Push16)
+0x05 	ld.8 B,#u16_u8_10(SP) 	; 	LDIMMHI,NEXT(Ldb8_16)
+0x06 	push A 	; 	TO_Z(R_A),L(R_MDR,LWORD),NEXT(Push16)
+0x07 	push B 	; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(Push16)
+0x08 	br.ne #d16 	; 	LDIMMHI,NEXT(BrNegated)
+0x09 	pop MSW 	; 	TO_Z(R_SP),DATA,NEXT(Pop16)
+0x0a 	pop C 	; 	TO_Z(R_SP),DATA,NEXT(Pop16)
+0x0b 	pop PC 	; 	TO_Z(R_SP),DATA,NEXT(Pop16)
+0x0c 	pop DP 	; 	TO_Z(R_SP),DATA,NEXT(Pop16)
+0x0d 	pop SP 	; 	TO_Z(R_SP),DATA,NEXT(Pop16)
+0x0e 	pop A 	; 	TO_Z(R_SP),DATA,NEXT(Pop16)
+0x0f 	pop B 	; 	TO_Z(R_SP),DATA,NEXT(Pop16)
+0x10 	ld.8 A,#u16(DP) 	; 	LDIMMHI,NEXT(Lda8_16)
+0x11 	ld.8 A,#u8(SP) 	; 	LDIMMLO,NEXT(Lda8_8)
+0x12 	ld.8 A,#u16(A) 	; 	LDIMMHI,NEXT(Lda8_16)
+0x13 	ld.8 A,#u16(B) 	; 	LDIMMHI,NEXT(Lda8_16)
+0x14 	ld.8 B,#u16(DP) 	; 	LDIMMHI,NEXT(Ldb8_16)
+0x15 	ld.8 B,#u8(SP) 	; 	LDIMMLO,NEXT(Ldb8_8)
+0x16 	ld.8 B,#u16(A) 	; 	LDIMMHI,NEXT(Ldb8_16)
+0x17 	ld.8 B,#u16(B) 	; 	LDIMMHI,NEXT(Ldb8_16)
+0x18 	ld.16 A,#u16(DP) 	; 	LDIMMHI,NEXT(Lda16_16)
+0x19 	ld.16 A,#u16_u8_68(SP) 	; 	LDIMMHI,NEXT(Lda16_16)
+0x1a 	ld.16 A,#u16(A) 	; 	LDIMMHI,NEXT(Lda16_16)
+0x1b 	ld.16 A,#u16(B) 	; 	LDIMMHI,NEXT(Lda16_16)
+0x1c 	ld.16 B,#u16(DP) 	; 	LDIMMHI,NEXT(Ldb16_16)
+0x1d 	ld.16 B,#u16_u8_68(SP) 	; 	LDIMMHI,NEXT(Ldb16_16)
+0x1e 	ld.16 B,#u16(A) 	; 	LDIMMHI,NEXT(Ldb16_16)
+0x1f 	ld.16 B,#u16(B) 	; 	LDIMMHI,NEXT(Ldb16_16)
+0x20 	sub.8 A,#u16(DP) 	; 	LDIMMHI,NEXT(Aluop8_indir16)
+0x21 	sub.8 A,#u16(SP) 	; 	LDIMMHI,NEXT(Aluop8_indir16)
+0x22 	push MSW 	; 	TO_Z(R_MSW),L(R_MDR,LWORD),NEXT(Push16)
+0x23 	sub.8 A,#u16(B) 	; 	LDIMMHI,NEXT(Aluop8_indir16)
+0x24 	sub.8 A,#i8_1 	; 	LDIMMLO,NEXT(Aluop8)
+0x25 	sub.16 (--A),(--B) 	; 	DEC_TO_Z(R_A),DATA,NEXT(Mop16)
+0x26 	push SP 	; 	TO_Z(R_SP),L(R_MDR,LWORD),NEXT(Push16)
+0x27 	sub.8 A,B 	; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(Aluop8)
+0x28 	sub.16 A,#u16(DP) 	; 	LDIMMHI,NEXT(Aluop16_indir16)
+0x29 	sub.16 A,#u16(SP) 	; 	LDIMMHI,NEXT(Aluop16_indir16)
+0x2a 	sbc.16 (--A),(--B) 	; 	DEC_TO_Z(R_A),DATA,NEXT(Mop16Carry)
+0x2b 	sub.16 A,#u16(B) 	; 	LDIMMHI,NEXT(Aluop16_indir16)
+0x2c 	sub.16 A,#i16_exti8 	; 	LDIMMHI,NEXT(Aluop16_16)
+0x2d 	sub.16 A,#exti8 	; 	LDIMMEXT,NEXT(Aluop16)
+0x2e 	wcpte A,(B) 	; 	PRIV(1),TO_Z(R_B),SET_ADR(CODE_SPACE,PTB_OVERRIDE),NEXT(Wcpte)
+0x2f 	sub.16 A,B 	; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(Aluop16)
+0x30 	add.8 A,#u16(DP) 	; 	LDIMMHI,NEXT(Aluop8_indir16)
+0x31 	add.8 A,#u16(SP) 	; 	LDIMMHI,NEXT(Aluop8_indir16)
+0x32 	br A 	; 	TO_Z(R_A),L(R_PC,LWORD),CODE,NEXT(Fetch)
+0x33 	add.8 A,#u16(B) 	; 	LDIMMHI,NEXT(Aluop8_indir16)
+0x34 	add.8 A,#i8_1 	; 	LDIMMLO,NEXT(Aluop8)
+0x35 	add.16 (--A),(--B) 	; 	DEC_TO_Z(R_A),DATA,NEXT(Mop16)
+0x36 	add.8 A,A 	; 	TO_Z(R_A),L(R_MDR,LWORD),NEXT(Aluop8)
+0x37 	add.8 A,B 	; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(Aluop8)
+0x38 	add.16 A,#u16(DP) 	; 	LDIMMHI,NEXT(Aluop16_indir16)
+0x39 	add.16 A,#u16(SP) 	; 	LDIMMHI,NEXT(Aluop16_indir16)
+0x3a 	syscall #sys_num8 	; 	LDIMMLO,NEXT(Syscall)
+0x3b 	add.16 A,#u16(B) 	; 	LDIMMHI,NEXT(Aluop16_indir16)
+0x3c 	add.16 A,#i16_exti8 	; 	LDIMMHI,NEXT(Aluop16_16)
+0x3d 	add.16 A,#exti8 	; 	LDIMMEXT,NEXT(Aluop16)
+0x3e 	add.16 A,A 	; 	TO_Z(R_A),L(R_MDR,LWORD),NEXT(Aluop16)
+0x3f 	add.16 A,B 	; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(Aluop16)
+0x40 	cmp.8 A,#u16(DP) 	; 	LDIMMHI,NEXT(Cmp8_indir16)
+0x41 	cmp.8 A,#u16(SP) 	; 	LDIMMHI,NEXT(Cmp8_indir16)
+0x42 	copy C,B 	; 	TO_Z(R_B),L(R_C,LWORD),NEXT(Fetch)
+0x43 	cmp.8 A,#u16(B) 	; 	LDIMMHI,NEXT(Cmp8_indir16)
+0x44 	cmp.8 A,#i8_0 	; 	LDIMMLO,NEXT(Cmp8)
+0x45 	cmp.8 A,#0 	; 	E_L(R_A),E_R(ER_MDR),ALU(OP_SUB,BYTE,NO_CARRY),MISC(M_SET_FLAGS),NEXT(Fetch)
+0x46 	xor.16 A,A 	; 	TO_Z(R_A),L(R_MDR,LWORD),NEXT(Aluop16)
+0x47 	cmp.8 A,B 	; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(Cmp8)
+0x48 	cmp.16 A,#u16(DP) 	; 	LDIMMHI,NEXT(Cmp16_indir16)
+0x49 	cmp.16 A,#u16(SP) 	; 	LDIMMHI,NEXT(Cmp16_indir16)
+0x4a 	sh0add B,A,B 	; 	TO_Z(R_A),L(R_MDR,LWORD),NEXT(LeaB1)
+0x4b 	cmp.16 A,#u16(B) 	; 	LDIMMHI,NEXT(Cmp16_indir16)
+0x4c 	cmp.16 A,#i16_exti8_0 	; 	LDIMMHI,NEXT(Cmp16_16)
+0x4d 	cmp.16 A,#exti8_0 	; 	LDIMMEXT,NEXT(Cmp16)
+0x4e 	cmp.16 A,#0 	; 	E_L(R_A),E_R(ER_MDR),ALU(OP_SUB,WORD,NO_CARRY),MISC(M_SET_FLAGS),NEXT(Fetch)
+0x4f 	cmp.16 A,B 	; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(Cmp16)
+0x50 	or.8 A,#u16(DP) 	; 	LDIMMHI,NEXT(Aluop8_indir16)
+0x51 	or.8 A,#u16(SP) 	; 	LDIMMHI,NEXT(Aluop8_indir16)
+0x52 	sex A 	; 	TO_Z8(R_A),L(R_A,LWORD),NEXT(Fetch)
+0x53 	or.8 A,#u16(B) 	; 	LDIMMHI,NEXT(Aluop8_indir16)
+0x54 	or.8 A,#i8_1 	; 	LDIMMLO,NEXT(Aluop8)
+0x55 	or.16 (--A),(--B) 	; 	DEC_TO_Z(R_A),DATA,NEXT(Mop16)
+0x56 	br.leu #d16 	; 	LDIMMHI,NEXT(BrNormal)
+0x57 	or.8 A,B 	; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(Aluop8)
+0x58 	or.16 A,#u16(DP) 	; 	LDIMMHI,NEXT(Aluop16_indir16)
+0x59 	or.16 A,#u16(SP) 	; 	LDIMMHI,NEXT(Aluop16_indir16)
+0x5a 	sh1add A,B,A 	; 	TO_Z(R_A),L(R_MDR,LWORD),NEXT(LeaABA2)
+0x5b 	or.16 A,#u16(B) 	; 	LDIMMHI,NEXT(Aluop16_indir16)
+0x5c 	or.16 A,#i16_exti8 	; 	LDIMMHI,NEXT(Aluop16_16)
+0x5d 	or.16 A,#exti8 	; 	LDIMMEXT,NEXT(Aluop16)
+0x5e 	br.gtu #d16 	; 	LDIMMHI,NEXT(BrNegated)
+0x5f 	or.16 A,B 	; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(Aluop16)
+0x60 	and.8 A,#u16(DP) 	; 	LDIMMHI,NEXT(Aluop8_indir16)
+0x61 	and.8 A,#u16(SP) 	; 	LDIMMHI,NEXT(Aluop8_indir16)
+0x62 	sh1add B,A,B 	; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(LeaBAB2)
+0x63 	and.8 A,#u16(B) 	; 	LDIMMHI,NEXT(Aluop8_indir16)
+0x64 	and.8 A,#i8_1 	; 	LDIMMLO,NEXT(Aluop8)
+0x65 	and.16 (--A),(--B) 	; 	DEC_TO_Z(R_A),DATA,NEXT(Mop16)
+0x66 	nop 	; 	NEXT(Fetch)
+0x67 	and.8 A,B 	; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(Aluop8)
+0x68 	and.16 A,#u16(DP) 	; 	LDIMMHI,NEXT(Aluop16_indir16)
+0x69 	and.16 A,#u16(SP) 	; 	LDIMMHI,NEXT(Aluop16_indir16)
+0x6a 	sh1add B,B,A 	; 	TO_Z(R_A),L(R_MDR,LWORD),NEXT(LeaBBA2)
+0x6b 	and.16 A,#u16(B) 	; 	LDIMMHI,NEXT(Aluop16_indir16)
+0x6c 	and.16 A,#i16_exti8 	; 	LDIMMHI,NEXT(Aluop16_16)
+0x6d 	and.16 A,#exti8 	; 	LDIMMEXT,NEXT(Aluop16)
+0x6e 	strcopy 	; 	TO_Z(R_B),DATA,NEXT(Strcopy)
+0x6f 	and.16 A,B 	; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(Aluop16)
+0x70 	lea A,#u16(DP) 	; 	LDIMMHI,NEXT(LdaA_16)
+0x71 	lea A,#u16(SP) 	; 	LDIMMHI,NEXT(LdaA_16)
+0x72 	lea A,#u16(A) 	; 	LDIMMHI,NEXT(LdaA_16)
+0x73 	lea A,#u16(B) 	; 	LDIMMHI,NEXT(LdaA_16)
+0x74 	lea B,#u16(DP) 	; 	LDIMMHI,NEXT(LdaB_16)
+0x75 	lea B,#u16(SP) 	; 	LDIMMHI,NEXT(LdaB_16)
+0x76 	lea B,#u16(A) 	; 	LDIMMHI,NEXT(LdaB_16)
+0x77 	lea B,#u16(B) 	; 	LDIMMHI,NEXT(LdaB_16)
+0x78 	ld.8 A,#u8 	; 	LDIMMLO,NEXT(LdiA8)
+0x79 	ld.8 B,#u8 	; 	LDIMMLO,NEXT(LdiB8)
+0x7a 	ld.16 A,#exti8_u16 	; 	LDIMMEXT,NEXT(LdiA16)
+0x7b 	ld.16 B,#exti8_u16 	; 	LDIMMEXT,NEXT(LdiB16)
+0x7c 	ld.16 A,#u16 	; 	LDIMMHI,NEXT(LdiA16_lo)
+0x7d 	ld.16 B,#u16 	; 	LDIMMHI,NEXT(LdiB16_lo)
+0x7e 	adc.16 A,A 	; 	TO_Z(R_A),L(R_MDR,LWORD),NEXT(Adc16)
+0x7f 	adc.16 A,B 	; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(Adc16)
+0x80 	call #d16 	; 	LDIMMHI,NEXT(CallImm)
+0x81 	ld.16 A,#u8(SP) 	; 	LDIMMLO,NEXT(Lda16_8)
+0x82 	call A 	; 	TO_Z(R_PC),L(R_MDR,LWORD),NEXT(CallA)
+0x83 	br #d16_d8 	; 	LDIMMHI,NEXT(RelBrLo)
+0x84 	sbr #d8 	; 	LDIMMEXT,NEXT(RelBr)
+0x85 	ld.16 B,#u8(SP) 	; 	LDIMMLO,NEXT(Ldb16_8)
+0x86 	lea A,#u8(SP) 	; 	LDIMMLO,NEXT(LeaShort)
+0x87 	lea B,#u8(SP) 	; 	LDIMMLO,NEXT(LeaShort)
+0x88 	copy A,MSW 	; 	TO_Z(R_MSW),L(R_A,LWORD),NEXT(Fetch)
+0x89 	br.eq #d16 	; 	LDIMMHI,NEXT(BrNormal)
+0x8a 	reti 	; 	PRIV(1),NEXT(Reti)
+0x8b 	trapo 	; 	MISC(M_TRAPO),NEXT(Fetch)
+0x8c 	bset.8 A,#mask8,#d8 	; 	LDIMMLO,NEXT(Bset8)
+0x8d 	bclr.8 A,#mask8,#d8 	; 	LDIMMLO,NEXT(Bclr8)
+0x8e 	bset.16 A,#mask16,#d8 	; 	LDIMMHI,NEXT(Bset16)
+0x8f 	bclr.16 A,#mask16,#d8 	; 	LDIMMHI,NEXT(Bclr16)
+0x90 	cmpb.eq.8 A,#u16(DP),#d8 	; 	LDIMMHI,NEXT(Cmpb8_indir16)
+0x91 	cmpb.eq.8 A,#u16(SP),#d8 	; 	LDIMMHI,NEXT(Cmpb8_indir16)
+0x92 	copy B,A 	; 	TO_Z(R_A),L(R_B,LWORD),NEXT(Fetch)
+0x93 	cmpb.eq.8 A,#u16(B),#d8 	; 	LDIMMHI,NEXT(Cmpb8_indir16)
+0x94 	cmpb.eq.8 A,#i8_0,#d8 	; 	LDIMMLO,NEXT(Cmpb8)
+0x95 	cmpb.eq.8 A,#0,#d8 	; 	TO_Z(R_MDR),L(R_MDR,LWORD),NEXT(Cmpb8)
+0x96 	copy C,A 	; 	TO_Z(R_A),L(R_C,LWORD),NEXT(Fetch)
+0x97 	cmpb.eq.8 A,B,#d8 	; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(Cmpb8)
+0x98 	cmpb.eq.16 A,#u16(DP),#d8 	; 	LDIMMHI,NEXT(Cmpb16_indir16)
+0x99 	cmpb.eq.16 A,#u16(SP),#d8 	; 	LDIMMHI,NEXT(Cmpb16_indir16)
+0x9a 	copy A,B 	; 	TO_Z(R_B),L(R_A,LWORD),NEXT(Fetch)
+0x9b 	cmpb.eq.16 A,#u16(B),#d8 	; 	LDIMMHI,NEXT(Cmpb16_indir16)
+0x9c 	cmpb.eq.16 A,#i16_exti8_0,#d8 	; 	LDIMMHI,NEXT(Cmpb16_16)
+0x9d 	cmpb.eq.16 A,#exti8_0,#d8 	; 	LDIMMEXT,NEXT(Cmpb16)
+0x9e 	cmpb.eq.16 A,#0,#d8 	; 	TO_Z(R_MDR),L(R_MDR,LWORD),NEXT(Cmpb16)
+0x9f 	cmpb.eq.16 A,B,#d8 	; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(Cmpb16)
+0xa0 	cmpb.lt.8 A,#u16(DP),#d8 	; 	LDIMMHI,NEXT(Cmpb8_indir16)
+0xa1 	cmpb.lt.8 A,#u16(SP),#d8 	; 	LDIMMHI,NEXT(Cmpb8_indir16)
+0xa2 	sh0add A,A,B 	; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(LeaA1)
+0xa3 	cmpb.lt.8 A,#u16(B),#d8 	; 	LDIMMHI,NEXT(Cmpb8_indir16)
+0xa4 	cmpb.lt.8 A,#i8_0,#d8 	; 	LDIMMLO,NEXT(Cmpb8)
+0xa5 	cmpb.lt.8 A,#0,#d8 	; 	TO_Z(R_MDR),L(R_MDR,LWORD),NEXT(Cmpb8)
+0xa6 	br.lt #d16 	; 	LDIMMHI,NEXT(BrNormal)
+0xa7 	cmpb.lt.8 A,B,#d8 	; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(Cmpb8)
+0xa8 	cmpb.lt.16 A,#u16(DP),#d8 	; 	LDIMMHI,NEXT(Cmpb16_indir16)
+0xa9 	cmpb.lt.16 A,#u16(SP),#d8 	; 	LDIMMHI,NEXT(Cmpb16_indir16)
+0xaa 	sh1add A,A,B 	; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(LeaAAB2)
+0xab 	cmpb.lt.16 A,#u16(B),#d8 	; 	LDIMMHI,NEXT(Cmpb16_indir16)
+0xac 	cmpb.lt.16 A,#i16_exti8,#d8 	; 	LDIMMHI,NEXT(Cmpb16_16)
+0xad 	cmpb.lt.16 A,#exti8,#d8 	; 	LDIMMEXT,NEXT(Cmpb16)
+0xae 	br.ge #d16 	; 	LDIMMHI,NEXT(BrNegated)
+0xaf 	cmpb.lt.16 A,B,#d8 	; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(Cmpb16)
+0xb0 	cmpb.le.8 A,#u16(DP),#d8 	; 	LDIMMHI,NEXT(Cmpb8_indir16)
+0xb1 	cmpb.le.8 A,#u16(SP),#d8 	; 	LDIMMHI,NEXT(Cmpb8_indir16)
+0xb2 	sex B 	; 	TO_Z8(R_B),L(R_B,LWORD),NEXT(Fetch)
+0xb3 	cmpb.le.8 A,#u16(B),#d8 	; 	LDIMMHI,NEXT(Cmpb8_indir16)
+0xb4 	cmpb.le.8 A,#i8,#d8 	; 	LDIMMLO,NEXT(Cmpb8)
+0xb5 	br.le #d16 	; 	LDIMMHI,NEXT(BrNormal)
+0xb6 	copy DP,A 	; 	TO_Z(R_A),L(R_DP,LWORD),NEXT(Fetch)
+0xb7 	cmpb.le.8 A,B,#d8 	; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(Cmpb8)
+0xb8 	cmpb.le.16 A,#u16(DP),#d8 	; 	LDIMMHI,NEXT(Cmpb16_indir16)
+0xb9 	cmpb.le.16 A,#u16(SP),#d8 	; 	LDIMMHI,NEXT(Cmpb16_indir16)
+0xba 	adc.16 (--A),(--B) 	; 	DEC_TO_Z(R_A),DATA,NEXT(Mop16Carry)
+0xbb 	cmpb.le.16 A,#u16(B),#d8 	; 	LDIMMHI,NEXT(Cmpb16_indir16)
+0xbc 	cmpb.le.16 A,#i16_exti8,#d8 	; 	LDIMMHI,NEXT(Cmpb16_16)
+0xbd 	cmpb.le.16 A,#exti8,#d8 	; 	LDIMMEXT,NEXT(Cmpb16)
+0xbe 	br.gt #d16 	; 	LDIMMHI,NEXT(BrNegated)
+0xbf 	cmpb.le.16 A,B,#d8 	; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(Cmpb16)
+0xc0 	br.geu #d16 	; 	LDIMMHI,NEXT(BrNegated)
+0xc1 	st.8 #u16_u8_10(SP),A 	; 	LDIMMHI,NEXT(Sta8_16)
+0xc2 	shl.16 A 	; 	TO_Z(R_A),L(R_MDR,LWORD),NEXT(Shla16)
+0xc3 	shr.16 A 	; 	TO_Z(R_A),MISC(M_RSHIFT),L(R_A,LWORD),NEXT(Fetch)
+0xc4 	shl.16 B 	; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(Shlb16)
+0xc5 	st.8 #u16_u8_10(SP),B 	; 	LDIMMHI,NEXT(Stb8_16)
+0xc6 	shr.16 B 	; 	TO_Z(R_B),MISC(M_RSHIFT),L(R_B,LWORD),NEXT(Fetch)
+0xc7 	xor.16 A,B 	; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(Aluop16)
+0xc8 	copy PTB,A 	; 	PRIV(1),TO_Z(R_A),L(R_PTB,LWORD),NEXT(Fetch)
+0xc9 	st.16 #u16_u8_10(SP),A 	; 	LDIMMHI,NEXT(Sta16_16)
+0xca 	copy MSW,A 	; 	PRIV(1),NEXT(CopyMSWA)
+0xcb 	copy SP,A 	; 	TO_Z(R_A),L(R_SP,LWORD),NEXT(Fetch)
+0xcc 	xor.16 (--A),(--B) 	; 	DEC_TO_Z(R_A),DATA,NEXT(Mop16)
+0xcd 	st.16 #u16_u8_10(SP),B 	; 	LDIMMHI,NEXT(Stb16_16)
+0xce 	ld.16 C,#u16 	; 	LDIMMHI,NEXT(LdiC16_lo)
+0xcf 	br.ltu #d16 	; 	LDIMMHI,NEXT(BrNormal)
+0xd0 	st.8 #u16(DP),A 	; 	LDIMMHI,NEXT(Sta8_16)
+0xd1 	st.8 #u8(SP),A 	; 	LDIMMLO,NEXT(Sta8_8)
+0xd2 	st.8 #u16(A),A 	; 	LDIMMHI,NEXT(Sta8_16)
+0xd3 	st.8 #u16(B),A 	; 	LDIMMHI,NEXT(Sta8_16)
+0xd4 	st.8 #u16(DP),B 	; 	LDIMMHI,NEXT(Stb8_16)
+0xd5 	st.8 #u8(SP),B 	; 	LDIMMLO,NEXT(Stb8_8)
+0xd6 	st.8 #u16(A),B 	; 	LDIMMHI,NEXT(Stb8_16)
+0xd7 	st.8 #u16(B),B 	; 	LDIMMHI,NEXT(Stb8_16)
+0xd8 	st.16 #u16(DP),A 	; 	LDIMMHI,NEXT(Sta16_16)
+0xd9 	st.16 #u8(SP),A 	; 	LDIMMLO,NEXT(Sta16_8)
+0xda 	st.16 #u16(A),A 	; 	LDIMMHI,NEXT(Sta16_16)
+0xdb 	st.16 #u16(B),A 	; 	LDIMMHI,NEXT(Sta16_16)
+0xdc 	st.16 #u16(DP),B 	; 	LDIMMHI,NEXT(Stb16_16)
+0xdd 	st.16 #u8(SP),B 	; 	LDIMMLO,NEXT(Stb16_8)
+0xde 	st.16 #u16(A),B 	; 	LDIMMHI,NEXT(Stb16_16)
+0xdf 	st.16 #u16(B),B 	; 	LDIMMHI,NEXT(Stb16_16)
+0xe0 	ldcode.8 A,(B) 	; 	TO_Z(R_B),CODE,NEXT(Ldcode8)
+0xe1 	copy A,DP 	; 	TO_Z(R_DP),L(R_A,LWORD),NEXT(Fetch)
+0xe2 	ld.16 C,#exti8_u16 	; 	LDIMMEXT,NEXT(LdiC16)
+0xe3 	memcopy4 	; 	INC2_TO_Z(R_B),DATA,NEXT(Mcpy4)
+0xe4 	enter #fsize16_8 	; 	LDIMMHI,NEXT(Enter)
+0xe5 	enter #fsize8 	; 	NEG1_TO_Z,LATCH(R_MDR),NEXT(Enter)
+0xe6 	vshl.16 A 	; 	TO_Z(R_A),L(R_MDR,LWORD),NEXT(Vshl)
+0xe7 	vshl.16 B 	; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(Vshl)
+0xe8 	memcopy 	; 	COMPARE_0(R_C),MISC(M_SET_FLAGS),NEXT(Bcopy)
+0xe9 	tosys 	; 	PRIV(1),COMPARE_0(R_C),MISC(M_SET_FLAGS),NEXT(ToSys)
+0xea 	fromsys 	; 	PRIV(1),COMPARE_0(R_C),MISC(M_SET_FLAGS),NEXT(FromSys)
+0xeb 	ldclr.8 A,(B) 	; 	TO_Z(R_B),DATA,NEXT(LdClr)
+0xec 	wdpte A,(B) 	; 	PRIV(1),TO_Z(R_B),SET_ADR(DATA_SPACE,PTB_OVERRIDE),NEXT(Wdpte)
+0xed 	sbc.16 A,B 	; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(Sbc16)
+0xee 	vshr.16 A 	; 	TO_Z(R_A),L(R_MDR,LWORD),NEXT(Vshr)
+0xef 	vshr.16 B 	; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(Vshr)
+0xf0 	cmpb.ne.8 A,#u16(DP),#d8 	; 	LDIMMHI,NEXT(Cmpb8_indir16)
+0xf1 	cmpb.ne.8 A,#u16(SP),#d8 	; 	LDIMMHI,NEXT(Cmpb8_indir16)
+0xf2 	copy A,C 	; 	TO_Z(R_C),L(R_A,LWORD),NEXT(Fetch)
+0xf3 	cmpb.ne.8 A,#u16(B),#d8 	; 	LDIMMHI,NEXT(Cmpb8_indir16)
+0xf4 	cmpb.ne.8 A,#i8_0,#d8 	; 	LDIMMLO,NEXT(Cmpb8)
+0xf5 	cmpb.ne.8 A,#0,#d8 	; 	TO_Z(R_MDR),L(R_MDR,LWORD),NEXT(Cmpb8)
+0xf6 	copy A,SP 	; 	TO_Z(R_SP),L(R_A,LWORD),NEXT(Fetch)
+0xf7 	cmpb.ne.8 A,B,#d8 	; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(Cmpb8)
+0xf8 	cmpb.ne.16 A,#u16(DP),#d8 	; 	LDIMMHI,NEXT(Cmpb16_indir16)
+0xf9 	cmpb.ne.16 A,#u16(SP),#d8 	; 	LDIMMHI,NEXT(Cmpb16_indir16)
+0xfa 	bkpt 	; 	MISC(M_BKPT),NEXT(Unreachable)
+0xfb 	cmpb.ne.16 A,#u16(B),#d8 	; 	LDIMMHI,NEXT(Cmpb16_indir16)
+0xfc 	cmpb.ne.16 A,#i16_exti8_0,#d8 	; 	LDIMMHI,NEXT(Cmpb16_16)
+0xfd 	cmpb.ne.16 A,#exti8_0,#d8 	; 	LDIMMEXT,NEXT(Cmpb16)
+0xfe 	cmpb.ne.16 A,#0,#d8 	; 	TO_Z(R_MDR),L(R_MDR,LWORD),NEXT(Cmpb16)
+0xff 	cmpb.ne.16 A,B,#d8 	; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(Cmpb16)
+Top half of PROM - continuation microcode.
+0x100 	Fetch 	; 	FETCH_OP
+0x101 	IRQ5 	; 	TO_Z(R_MAR),MISC(M_COMMIT),NEXT(Fault)
+0x102 	IRQ4 	; 	TO_Z(R_MAR),MISC(M_COMMIT),NEXT(Fault)
+0x103 	IRQ3 	; 	TO_Z(R_MAR),MISC(M_COMMIT),NEXT(Fault)
+0x104 	IRQ2 	; 	TO_Z(R_MAR),MISC(M_COMMIT),NEXT(Fault)
+0x105 	IRQ1 	; 	TO_Z(R_MAR),MISC(M_COMMIT),NEXT(Fault)
+0x106 	IRQ0 	; 	TO_Z(R_MAR),MISC(M_COMMIT),NEXT(Fault)
+0x107 	DMA_req 	; 	MISC(M_DMA_ACK),NEXT(Fetch)
+0x108 	Fault_syscall 	; 	TO_Z(R_MAR),MISC(M_COMMIT),NEXT(Fault)
+0x109 		; 	
+0x10a 	Fault_ovflo 	; 	TO_Z(R_MAR),L(R_PC,LWORD),NEXT(Fault)
+0x10b 	Fault_priv 	; 	TO_Z(R_MAR),L(R_PC,LWORD),NEXT(Fault)
+0x10c 	Fault_bkpt 	; 	TO_Z(R_MAR),L(R_PC,LWORD),NEXT(Fault)
+0x10d 	Fault_nw 	; 	TO_Z(R_MAR),L(R_PC,LWORD),NEXT(Fault)
+0x10e 	Fault_np 	; 	TO_Z(R_MAR),L(R_PC,LWORD),NEXT(Fault)
+0x10f 		; 	
+0x110 	Aluop8_indir 	; 	GEN_ADDR(R_IR_BASE),DATA,NEXT(FALLTHRU)
+0x111 		; 	LDLO,NEXT(FALLTHRU)
+0x112 	Aluop8 	; 	E_L(R_A),E_R(ER_MDR),ALU(OP_IR13,BYTE,NO_CARRY),L(R_A,LBYTE),MISC(M_SET_FLAGS),NEXT(Fetch)
+0x113 	Aluop8_indir16 	; 	LDIMMLO,NEXT(Aluop8_indir)
+0x114 	Aluop16_indir 	; 	GEN_ADDR(R_IR_BASE),DATA,NEXT(FALLTHRU)
+0x115 		; 	LDHI,NEXT(FALLTHRU)
+0x116 		; 	LDLO,NEXT(FALLTHRU)
+0x117 	Aluop16 	; 	E_L(R_A),E_R(ER_MDR),ALU(OP_IR13,WORD,NO_CARRY),L(R_A,LWORD),MISC(M_SET_FLAGS),NEXT(Fetch)
+0x118 	Aluop16_indir16 	; 	LDIMMLO,NEXT(Aluop16_indir)
+0x119 	Cmp8_indir 	; 	GEN_ADDR(R_IR_BASE),DATA,NEXT(FALLTHRU)
+0x11a 		; 	LDLO,NEXT(FALLTHRU)
+0x11b 	Cmp8 	; 	E_L(R_A),E_R(ER_MDR),ALU(OP_SUB,BYTE,NO_CARRY),MISC(M_SET_FLAGS),NEXT(Fetch)
+0x11c 	Cmp8_indir16 	; 	LDIMMLO,NEXT(Cmp8_indir)
+0x11d 	Cmp16_indir 	; 	GEN_ADDR(R_IR_BASE),DATA,NEXT(FALLTHRU)
+0x11e 		; 	LDHI,NEXT(FALLTHRU)
+0x11f 		; 	LDLO,NEXT(FALLTHRU)
+0x120 	Cmp16 	; 	E_L(R_A),E_R(ER_MDR),ALU(OP_SUB,WORD,NO_CARRY),MISC(M_SET_FLAGS),NEXT(Fetch)
+0x121 	Cmp16_indir16 	; 	LDIMMLO,NEXT(Cmp16_indir)
+0x122 	Cmpb8_indir 	; 	GEN_ADDR(R_IR_BASE),DATA,NEXT(FALLTHRU)
+0x123 		; 	LDLO,NEXT(FALLTHRU)
+0x124 	Cmpb8 	; 	E_L(R_A),E_R(ER_MDR),ALU(OP_SUB,BYTE,NO_CARRY),MISC(M_SET_FLAGS),NEXT(CheckBr)
+0x125 	Cmpb8_indir16 	; 	LDIMMLO,NEXT(Cmpb8_indir)
+0x126 	Cmpb16_indir 	; 	GEN_ADDR(R_IR_BASE),DATA,NEXT(FALLTHRU)
+0x127 		; 	LDHI,NEXT(FALLTHRU)
+0x128 		; 	LDLO,NEXT(FALLTHRU)
+0x129 	Cmpb16 	; 	E_L(R_A),E_R(ER_MDR),ALU(OP_SUB,WORD,NO_CARRY),MISC(M_SET_FLAGS),NEXT(CheckBr)
+0x12a 	Cmpb16_indir16 	; 	LDIMMLO,NEXT(Cmpb16_indir)
+0x12b 	CheckBr 	; 	LDIMMEXT,CBR(B_NORMAL,TakenBr)
+0x12c 	TakenBr 	; 	E_L(R_PC),E_R(ER_MDR),ALU(OP_ADD,WORD,NO_CARRY),L(R_PC,LWORD),CODE,NEXT(Fetch)
+0x12d 	BrNormal 	; 	LDIMMLO,CBR(B_NORMAL,TakenBr)
+0x12e 	BrNegated 	; 	LDIMMLO,CBR(B_NEGATED,TakenBr)
+0x12f 	Bset8 	; 	E_L(R_A),E_R(ER_MDR),ALU(OP_AND,BYTE,NO_CARRY),MISC(M_SET_FLAGS),NEXT(CheckBrNeg)
+0x130 	CheckBrNeg 	; 	LDIMMEXT,CBR(B_NEGATED,TakenBr)
+0x131 	Bclr8 	; 	E_L(R_A),E_R(ER_MDR),ALU(OP_AND,BYTE,NO_CARRY),MISC(M_SET_FLAGS),NEXT(CheckBr)
+0x132 	Bset16 	; 	LDIMMLO,NEXT(FALLTHRU)
+0x133 		; 	E_L(R_A),E_R(ER_MDR),ALU(OP_AND,WORD,NO_CARRY),MISC(M_SET_FLAGS),NEXT(CheckBrNeg)
+0x134 	Bclr16 	; 	LDIMMLO,NEXT(FALLTHRU)
+0x135 		; 	E_L(R_A),E_R(ER_MDR),ALU(OP_AND,WORD,NO_CARRY),MISC(M_SET_FLAGS),NEXT(CheckBr)
+0x136 	Push16 	; 	DEC_TO_Z(R_SP),DATA,NEXT(FALLTHRU)
+0x137 		; 	WRITELO,DEC_TO_Z(R_MAR),DATA,L(R_SP,LWORD),NEXT(FALLTHRU)
+0x138 	Whi 	; 	WRITEHI,TO_Z(R_PC),CODE,NEXT(Fetch)
+0x139 	Pop16 	; 	LDHI,NEXT(FALLTHRU)
+0x13a 		; 	READLO,INC_TO_Z(R_MAR),L(R_SP,LWORD),DATA,NEXT(FALLTHRU)
+0x13b 		; 	TO_Z(R_MDR),L(R_IR_REG,LWORD),NEXT(PCtoMAR)
+0x13c 	Lda8_8 	; 	GEN_ADDR(R_IR_BASE),DATA,NEXT(FALLTHRU)
+0x13d 		; 	LDLO,NEXT(LdiA8)
+0x13e 	Lda8_16 	; 	LDIMMLO,NEXT(Lda8_8)
+0x13f 	Ldb8_8 	; 	GEN_ADDR(R_IR_BASE),DATA,NEXT(FALLTHRU)
+0x140 		; 	LDLO,NEXT(LdiB8)
+0x141 	Ldb8_16 	; 	LDIMMLO,NEXT(Ldb8_8)
+0x142 	Lda16_8 	; 	GEN_ADDR(R_IR_BASE),DATA,NEXT(FALLTHRU)
+0x143 		; 	LDHI,NEXT(FALLTHRU)
+0x144 		; 	LDLO,NEXT(LdiA16)
+0x145 	Lda16_16 	; 	LDIMMLO,NEXT(Lda16_8)
+0x146 	Ldb16_8 	; 	GEN_ADDR(R_IR_BASE),DATA,NEXT(FALLTHRU)
+0x147 		; 	LDHI,NEXT(FALLTHRU)
+0x148 		; 	LDLO,NEXT(LdiB16)
+0x149 	Ldb16_16 	; 	LDIMMLO,NEXT(Ldb16_8)
+0x14a 	Sta8_8 	; 	GEN_ADDR(R_IR_BASE),DATA,NEXT(FALLTHRU)
+0x14b 		; 	TO_Z(R_A),L(R_MDR,LWORD),NEXT(FALLTHRU)
+0x14c 	StaLo 	; 	STLO,NEXT(Fetch)
+0x14d 	Sta8_16 	; 	LDIMMLO,NEXT(Sta8_8)
+0x14e 	Sta16_8 	; 	GEN_ADDR(R_IR_BASE),DATA,NEXT(FALLTHRU)
+0x14f 		; 	TO_Z(R_A),L(R_MDR,LWORD),NEXT(FALLTHRU)
+0x150 	Shi 	; 	STHI,NEXT(StaLo)
+0x151 	Sta16_16 	; 	LDIMMLO,NEXT(Sta16_8)
+0x152 	Stb8_8 	; 	GEN_ADDR(R_IR_BASE),DATA,NEXT(FALLTHRU)
+0x153 		; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(StaLo)
+0x154 	Stb8_16 	; 	LDIMMLO,NEXT(Stb8_8)
+0x155 	Stb16_8 	; 	GEN_ADDR(R_IR_BASE),DATA,NEXT(FALLTHRU)
+0x156 		; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(Shi)
+0x157 	Stb16_16 	; 	LDIMMLO,NEXT(Stb16_8)
+0x158 	Sbc16 	; 	E_L(R_A),E_R(ER_MDR),ALU(OP_SUB,WORD,CARRY_IN),L(R_A,LWORD),MISC(M_SET_FLAGS),NEXT(Fetch)
+0x159 	Adc16 	; 	E_L(R_A),E_R(ER_MDR),ALU(OP_ADD,WORD,CARRY_IN),L(R_A,LWORD),MISC(M_SET_FLAGS),NEXT(Fetch)
+0x15a 	LdaA_16 	; 	LDIMMLO,NEXT(LdaA)
+0x15b 	LdaA 	; 	GEN_ADDR(R_IR_BASE),L(R_A,LWORD),NEXT(Fetch)
+0x15c 	LdaB_16 	; 	LDIMMLO,NEXT(LdaB)
+0x15d 	LdaB 	; 	GEN_ADDR(R_IR_BASE),L(R_B,LWORD),NEXT(Fetch)
+0x15e 	LdiA8 	; 	TO_Z(R_MDR),L(R_A,LBYTE),NEXT(Fetch)
+0x15f 	LdiB8 	; 	TO_Z(R_MDR),L(R_B,LBYTE),NEXT(Fetch)
+0x160 	LdiA16_lo 	; 	LDIMMLO,NEXT(LdiA16)
+0x161 	LdiA16 	; 	TO_Z(R_MDR),L(R_A,LWORD),NEXT(Fetch)
+0x162 	LdiB16_lo 	; 	LDIMMLO,NEXT(LdiB16)
+0x163 	LdiB16 	; 	TO_Z(R_MDR),L(R_B,LWORD),NEXT(Fetch)
+0x164 	LdiC16_lo 	; 	LDIMMLO,NEXT(LdiC16)
+0x165 	LdiC16 	; 	TO_Z(R_MDR),L(R_C,LWORD),NEXT(Fetch)
+0x166 	RelBrLo 	; 	LDIMMLO,NEXT(RelBr)
+0x167 	RelBr 	; 	GEN_ADDR(R_PC),L(R_PC,LWORD),CODE,NEXT(Fetch)
+0x168 	CallImm 	; 	LDIMMLO,NEXT(FALLTHRU)
+0x169 		; 	GEN_ADDR(R_PC),L(R_PC,LWORD),NEXT(FALLTHRU)
+0x16a 		; 	E_R(ER_MDR),E_L(R_PC),ALU(OP_SUB,WORD,NO_CARRY),L(R_MDR,LWORD),NEXT(Push16)
+0x16b 	CallA 	; 	DEC_TO_Z(R_SP),DATA,NEXT(FALLTHRU)
+0x16c 		; 	WRITELO,DEC_TO_Z(R_MAR),DATA,L(R_SP,LWORD),NEXT(FALLTHRU)
+0x16d 		; 	WRITEHI,TO_Z(R_A),L(R_PC,LWORD),CODE,NEXT(Fetch)
+0x16e 	LdClr 	; 	READLO,NEXT(FALLTHRU)
+0x16f 		; 	TO_Z(R_MDR),L(R_A,LBYTE),NEXT(Whi)
+0x170 	Wcpte 	; 	E_L(R_A),MISC(M_LPTE),NEXT(PCtoMAR)
+0x171 	Enter 	; 	LDIMMLO,NEXT(FALLTHRU)
+0x172 		; 	GEN_ADDR(R_SP),DATA,NEXT(FALLTHRU)
+0x173 		; 	TO_Z(R_SP),L(R_MDR,LWORD),NEXT(FALLTHRU)
+0x174 		; 	DEC_TO_Z(R_MAR),DATA,NEXT(FALLTHRU)
+0x175 		; 	WRITELO,DEC_TO_Z(R_MAR),DATA,L(R_SP,LWORD),NEXT(FALLTHRU)
+0x176 		; 	WRITEHI,TO_Z(R_MAR),L(R_SP,LWORD),NEXT(PCtoMAR)
+0x177 	Bcopy 	; 	CBR(B_NEGATED,FALLTHRU)
+0x178 		; 	TO_Z(R_B),DATA,NEXT(FALLTHRU)
+0x179 		; 	READLO,TO_Z(R_A),DATA,NEXT(Bcopy0)
+0x17a 	ToSys 	; 	PRIV(1),CBR(B_NEGATED,FALLTHRU)
+0x17b 		; 	TO_Z(R_B),SET_ADR(DATA_SPACE,PTB_OVERRIDE),NEXT(FALLTHRU)
+0x17c 		; 	READLO,TO_Z(R_A),DATA,NEXT(FALLTHRU)
+0x17d 	Bcopy0 	; 	WRITELO,INC_TO_Z(R_MAR),L(R_A,LWORD),NEXT(FALLTHRU)
+0x17e 	Bcopy1 	; 	INC_TO_Z(R_B),L(R_B,LWORD),NEXT(FALLTHRU)
+0x17f 	Bcopy2 	; 	DEC_TO_Z(R_C),L(R_C,LWORD),NEXT(FALLTHRU)
+0x180 	BackupPC 	; 	DEC_TO_Z(R_PC),L(R_PC,LWORD),CODE,NEXT(Fetch)
+0x181 	FromSys 	; 	PRIV(1),CBR(B_NEGATED,FALLTHRU)
+0x182 		; 	TO_Z(R_B),DATA,NEXT(FALLTHRU)
+0x183 		; 	READLO,TO_Z(R_A),SET_ADR(DATA_SPACE,PTB_OVERRIDE),NEXT(FALLTHRU)
+0x184 		; 	WRITELO,INC_TO_Z(R_MAR),L(R_A,LWORD),NEXT(Bcopy1)
+0x185 	Fault 	; 	TO_MDR(R_MSW),NEXT(FALLTHRU)
+0x186 		; 	ZERO_TO_Z,MISC(M_LEI),LMODE(1),NEXT(FALLTHRU)
+0x187 		; 	DEC_TO_Z(R_SSP),DATA,NEXT(FALLTHRU)
+0x188 		; 	PUSHLO,NEXT(FALLTHRU)
+0x189 		; 	PUSHHI,NEXT(FALLTHRU)
+0x18a 		; 	TO_MDR(R_SP),NEXT(FALLTHRU)
+0x18b 		; 	PUSHLO,NEXT(FALLTHRU)
+0x18c 		; 	PUSHHI,NEXT(FALLTHRU)
+0x18d 		; 	TO_MDR(R_TPC),NEXT(FALLTHRU)
+0x18e 		; 	PUSHLO,NEXT(FALLTHRU)
+0x18f 		; 	PUSHHI,NEXT(FALLTHRU)
+0x190 		; 	TO_MDR(R_A),NEXT(FALLTHRU)
+0x191 		; 	PUSHLO,NEXT(FALLTHRU)
+0x192 		; 	PUSHHI,NEXT(FALLTHRU)
+0x193 		; 	TO_MDR(R_B),NEXT(FALLTHRU)
+0x194 		; 	PUSHLO,NEXT(FALLTHRU)
+0x195 		; 	PUSHHI,NEXT(FALLTHRU)
+0x196 		; 	TO_MDR(R_C),NEXT(FALLTHRU)
+0x197 		; 	PUSHLO,NEXT(FALLTHRU)
+0x198 		; 	PUSHHI,NEXT(FALLTHRU)
+0x199 		; 	TO_MDR(R_DP),NEXT(FALLTHRU)
+0x19a 		; 	PUSHLO,L(R_SP,LWORD),NEXT(FALLTHRU)
+0x19b 		; 	PUSHHI,NEXT(FALLTHRU)
+0x19c 		; 	TO_Z(R_PC),L(R_A,LWORD),NEXT(FALLTHRU)
+0x19d 		; 	TO_Z(R_FCODE),DATA,L(R_C,LWORD),NEXT(FALLTHRU)
+0x19e 		; 	POPHI,NEXT(FALLTHRU)
+0x19f 		; 	POPLO,NEXT(FALLTHRU)
+0x1a0 	  	; 	ZERO_TO_Z,L(R_DP,LWORD),NEXT(FALLTHRU)
+0x1a1 	  	; 	FROM_MDR(R_PC),CODE,MISC(M_CLR_TRAP),NEXT(Fetch)
+0x1a2 	Reti 	; 	TO_Z(R_SP),DATA,NEXT(FALLTHRU)
+0x1a3 		; 	POPHI,NEXT(FALLTHRU)
+0x1a4 		; 	POPLO,NEXT(FALLTHRU)
+0x1a5 		; 	FROM_MDR(R_DP),NEXT(FALLTHRU)
+0x1a6 		; 	POPHI,NEXT(FALLTHRU)
+0x1a7 		; 	POPLO,NEXT(FALLTHRU)
+0x1a8 		; 	FROM_MDR(R_C),NEXT(FALLTHRU)
+0x1a9 		; 	POPHI,NEXT(FALLTHRU)
+0x1aa 		; 	POPLO,NEXT(FALLTHRU)
+0x1ab 		; 	FROM_MDR(R_B),NEXT(FALLTHRU)
+0x1ac 		; 	POPHI,NEXT(FALLTHRU)
+0x1ad 		; 	POPLO,NEXT(FALLTHRU)
+0x1ae 		; 	FROM_MDR(R_A),NEXT(FALLTHRU)
+0x1af 		; 	POPHI,NEXT(FALLTHRU)
+0x1b0 		; 	POPLO,NEXT(FALLTHRU)
+0x1b1 		; 	FROM_MDR(R_PC),NEXT(FALLTHRU)
+0x1b2 		; 	POPHI,NEXT(FALLTHRU)
+0x1b3 		; 	POPLO,NEXT(FALLTHRU)
+0x1b4 		; 	TO_Z(R_MDR),MISC(M_COMMIT),NEXT(FALLTHRU)
+0x1b5 		; 	POPHI,NEXT(FALLTHRU)
+0x1b6 		; 	READLO,INC_TO_Z(R_MAR),L(R_SP,LWORD),NEXT(FALLTHRU)
+0x1b7 		; 	TO_Z(R_MDR),L(R_MSW,LWORD),LMODE(1),LPAGING(1),MISC(M_LEI),NEXT(FALLTHRU)
+0x1b8 		; 	TO_Z(R_TPC),L(R_SP,LWORD),NEXT(PCtoMAR)
+0x1b9 	Syscall 	; 	TO_Z(R_MDR),L(R_A,LWORD),NEXT(FALLTHRU)
+0x1ba 		; 	MISC(M_SYSCALL),NEXT(Unreachable)
+0x1bb 	Ldcode8 	; 	LDLO,NEXT(LdiA8)
+0x1bc 	Wdpte 	; 	E_L(R_A),MISC(M_LPTE),NEXT(PCtoMAR)
+0x1bd 	Shlb16 	; 	E_L(R_B),E_R(ER_MDR),ALU(OP_ADD,WORD,NO_CARRY),L(R_B,LWORD),NEXT(Fetch)
+0x1be 	Shla16 	; 	E_L(R_A),E_R(ER_MDR),ALU(OP_ADD,WORD,NO_CARRY),L(R_A,LWORD),NEXT(Fetch)
+0x1bf 	Aluop16_16 	; 	LDIMMLO,NEXT(Aluop16)
+0x1c0 	Cmpb16_16 	; 	LDIMMLO,NEXT(Cmpb16)
+0x1c1 	Cmp16_16 	; 	LDIMMLO,NEXT(Cmp16)
+0x1c2 	PCtoMAR 	; 	TO_Z(R_PC),CODE,NEXT(Fetch)
+0x1c3 	Vshl 	; 	COMPARE_0(R_C),MISC(M_SET_FLAGS),NEXT(FALLTHRU)
+0x1c4 	  	; 	CBR(B_NEGATED,FALLTHRU)
+0x1c5 	  	; 	COMPARE_0(R_MDR),MISC(M_SET_FLAGS),NEXT(FALLTHRU)
+0x1c6 	  	; 	CBR(B_NEGATED,FALLTHRU)
+0x1c7 	  	; 	E_L(R_MDR),E_R(ER_MDR),ALU(OP_ADD,WORD,NO_CARRY),L(R_IR_REG,LWORD),NEXT(Bcopy2)
+0x1c8 	Vshr 	; 	COMPARE_0(R_C),MISC(M_SET_FLAGS),NEXT(FALLTHRU)
+0x1c9 	  	; 	CBR(B_NEGATED,FALLTHRU)
+0x1ca 		; 	COMPARE_0(R_MDR),MISC(M_SET_FLAGS),NEXT(FALLTHRU)
+0x1cb 		; 	CBR(B_NEGATED,FALLTHRU)
+0x1cc 		; 	TO_Z(R_MDR),MISC(M_RSHIFT),L(R_IR_REG,LWORD),NEXT(Bcopy2)
+0x1cd 	LeaAAB2 	; 	E_R(ER_MDR),E_L(R_MDR),ALU(OP_ADD,WORD,NO_CARRY),L(R_MDR,LWORD),NEXT(FALLTHRU)
+0x1ce 	LeaA1 	; 	E_R(ER_MDR),E_L(R_A),ALU(OP_ADD,WORD,NO_CARRY),L(R_A,LWORD),NEXT(Fetch)
+0x1cf 	LeaBBA2 	; 	E_R(ER_MDR),E_L(R_MDR),ALU(OP_ADD,WORD,NO_CARRY),L(R_MDR,LWORD),NEXT(FALLTHRU)
+0x1d0 	LeaB1 	; 	E_R(ER_MDR),E_L(R_B),ALU(OP_ADD,WORD,NO_CARRY),L(R_B,LWORD),NEXT(Fetch)
+0x1d1 	LeaABA2 	; 	E_R(ER_MDR),E_L(R_MDR),ALU(OP_ADD,WORD,NO_CARRY),L(R_MDR,LWORD),NEXT(FALLTHRU)
+0x1d2 		; 	E_R(ER_MDR),E_L(R_B),ALU(OP_ADD,WORD,NO_CARRY),L(R_A,LWORD),NEXT(Fetch)
+0x1d3 	LeaBAB2 	; 	E_R(ER_MDR),E_L(R_MDR),ALU(OP_ADD,WORD,NO_CARRY),L(R_MDR,LWORD),NEXT(FALLTHRU)
+0x1d4 		; 	E_R(ER_MDR),E_L(R_A),ALU(OP_ADD,WORD,NO_CARRY),L(R_B,LWORD),NEXT(Fetch)
+0x1d5 	CopyMSWA 	; 	TO_Z(R_A),L(R_MSW,LWORD),LMODE(1),LPAGING(1),MISC(M_LEI),NEXT(PCtoMAR)
+0x1d6 	Strcopy 	; 	READLO,TO_Z(R_A),DATA,NEXT(FALLTHRU)
+0x1d7 	  	; 	WRITELO,COMPARE8_0(R_MDR),MISC(M_SET_FLAGS),NEXT(FALLTHRU)
+0x1d8 	  	; 	TO_Z(R_PC),CODE,NEXT(FALLTHRU)
+0x1d9 	  	; 	INC_TO_Z(R_A),L(R_A,LWORD),NEXT(FALLTHRU)
+0x1da 		; 	INC_TO_Z(R_B),L(R_B,LWORD),CBR(B_NEGATED,BackupPC)
+0x1db 	LeaShort 	; 	GEN_ADDR(R_SP),L(R_IR_REG,LWORD),NEXT(Fetch)
+0x1dc 	Mcpy4 	; 	READHI,INC_TO_Z(R_MAR),DATA,NEXT(FALLTHRU)
+0x1dd 	  	; 	READLO,TO_Z(R_B),DATA,NEXT(FALLTHRU)
+0x1de 	  	; 	TO_Z(R_MDR),L(R_C,LWORD),NEXT(FALLTHRU)
+0x1df 	  	; 	READHI,INC_TO_Z(R_MAR),DATA,NEXT(FALLTHRU)
+0x1e0 	  	; 	READLO,TO_Z(R_A),DATA,NEXT(FALLTHRU)
+0x1e1 	  	; 	WRITEHI,INC_TO_Z(R_MAR),DATA,NEXT(FALLTHRU)
+0x1e2 	  	; 	WRITELO,INC_TO_Z(R_MAR),DATA,NEXT(FALLTHRU)
+0x1e3 	  	; 	TO_Z(R_C),L(R_MDR,LWORD),NEXT(FALLTHRU)
+0x1e4 	  	; 	WRITEHI,INC_TO_Z(R_MAR),DATA,NEXT(FALLTHRU)
+0x1e5 	  	; 	WRITELO,INC_TO_Z(R_MAR),L(R_A,LWORD),NEXT(FALLTHRU)
+0x1e6 	  	; 	INC2_TO_Z(R_B),L(R_B,LWORD),NEXT(FALLTHRU)
+0x1e7 	  	; 	INC2_TO_Z(R_B),L(R_B,LWORD),NEXT(PCtoMAR)
+0x1e8 	Mop16 	; 	READLO,NEXT(FALLTHRU)
+0x1e9 	  	; 	WRITELO,DEC_TO_Z(R_MAR),DATA,NEXT(FALLTHRU)
+0x1ea 	  	; 	READHI,NEXT(FALLTHRU)
+0x1eb 		; 	WRITEHI,TO_Z(R_MDR),L(R_C,LWORD),NEXT(FALLTHRU)
+0x1ec 	  	; 	DEC_TO_Z(R_B),DATA,NEXT(FALLTHRU)
+0x1ed 	  	; 	READLO,DEC_TO_Z(R_MAR),DATA,NEXT(FALLTHRU)
+0x1ee 	  	; 	READHI,TO_Z(R_MAR),L(R_B,LWORD),NEXT(FALLTHRU)
+0x1ef 	  	; 	E_L(R_C),E_R(ER_MDR),ALU(OP_IR13,WORD,NO_CARRY),L(R_MDR,LWORD),MISC(M_SET_FLAGS),NEXT(FALLTHRU)
+0x1f0 	Mop16a 	; 	DEC_TO_Z(R_A),DATA,NEXT(FALLTHRU)
+0x1f1 	  	; 	WRITELO,DEC_TO_Z(R_MAR),DATA,L(R_A,LWORD),NEXT(Whi)
+0x1f2 	Mop16Carry 	; 	READLO,NEXT(FALLTHRU)
+0x1f3 	  	; 	WRITELO,DEC_TO_Z(R_MAR),DATA,NEXT(FALLTHRU)
+0x1f4 	  	; 	READHI,NEXT(FALLTHRU)
+0x1f5 	  	; 	WRITEHI,TO_Z(R_MDR),L(R_C,LWORD),READHI,NEXT(FALLTHRU)
+0x1f6 	  	; 	DEC_TO_Z(R_B),DATA,NEXT(FALLTHRU)
+0x1f7 	  	; 	READLO,DEC_TO_Z(R_MAR),DATA,NEXT(FALLTHRU)
+0x1f8 	  	; 	READHI,TO_Z(R_MAR),L(R_B,LWORD),NEXT(FALLTHRU)
+0x1f9 	  	; 	E_L(R_C),E_R(ER_MDR),ALU(OP_IR13,WORD,CARRY_IN),L(R_MDR,LWORD),MISC(M_SET_FLAGS),NEXT(Mop16a)
+0x1fa 	  	; 	 
+0x1fb 	  	; 	 
+0x1fc 	  	; 	 
+0x1fd 		; 	
+0x1fe 	Unreachable 	; 	NEXT(Unreachable)
+0x1ff 	UNUSABLE 	; 	
