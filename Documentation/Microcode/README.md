@@ -6,6 +6,7 @@
 <pre>
 
 Bottom half of PROM -  (starting point of each instruction, using opcode as direct index)
+  
 0x00 	halt 	; 	MISC(M_HALT),DEC_TO_Z(R_PC),L(R_PC,LWORD),CODE,NEXT(Fetch)
 0x01 	ld.8 A,#u16_u8_10(SP) 	; 	LDIMMHI,NEXT(Lda8_16)
 0x02 	push C 	; 	TO_Z(R_C),L(R_MDR,LWORD),NEXT(Push16)
@@ -262,7 +263,9 @@ Bottom half of PROM -  (starting point of each instruction, using opcode as dire
 0xfd 	cmpb.ne.16 A,#exti8_0,#d8 	; 	LDIMMEXT,NEXT(Cmpb16)
 0xfe 	cmpb.ne.16 A,#0,#d8 	; 	TO_Z(R_MDR),L(R_MDR,LWORD),NEXT(Cmpb16)
 0xff 	cmpb.ne.16 A,B,#d8 	; 	TO_Z(R_B),L(R_MDR,LWORD),NEXT(Cmpb16)
+  
 Top half of PROM - continuation microcode.
+  
 0x100 	Fetch 	; 	FETCH_OP
 0x101 	IRQ5 	; 	TO_Z(R_MAR),MISC(M_COMMIT),NEXT(Fault)
 0x102 	IRQ4 	; 	TO_Z(R_MAR),MISC(M_COMMIT),NEXT(Fault)
