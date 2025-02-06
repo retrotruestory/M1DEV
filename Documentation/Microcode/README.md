@@ -3,7 +3,7 @@
 >[!NOTE]
 >Important note: the following data is not official data but my attempt to understand and summarize how Magic 1 works.<br>There may be errors in the text - if one is found - please let me know about it so that I can make corrections in it. 
 
-
+<pre>
 
 Bottom half of PROM -  (starting point of each instruction, using opcode as direct index)
 0x00 	halt 	; 	MISC(M_HALT),DEC_TO_Z(R_PC),L(R_PC,LWORD),CODE,NEXT(Fetch)
@@ -519,3 +519,5 @@ Top half of PROM - continuation microcode.
 0x1fd 		; 	
 0x1fe 	Unreachable 	; 	NEXT(Unreachable)
 0x1ff 	UNUSABLE 	; 	
+
+</pre>
