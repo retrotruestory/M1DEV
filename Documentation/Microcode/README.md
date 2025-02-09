@@ -1,7 +1,53 @@
 #Magic-1 Microcode
 <pre>V2.3 by Bill Buzbee.</pre>
->[!NOTE]
->Important note: the following data is not official data but my attempt to understand and summarize how Magic 1 works.<br>There may be errors in the text - if one is found - please let me know about it so that I can make corrections in it. 
+
+Let me try to explain the microcode a little better.  The first thing you want to look at is the mcode_rec_t structure that is defined on the microcode web page.  This structure represents a single microcode instruction, and is exactly 40 bits (or 5 bytes) wide.  This corresponds to the 5 8-bit microcode EPROMS.  The first 8 bits of mcode_rec_t are the "next" field, which are stored in U5 on the microcode schematic sheet or microcode EPROM 0 and are programmed using the file workspace/M1Dev/PromData/Actual/prom23_0.hex.  The next 8 bits the latch bits through emdrlo, which correspond to U6/ EPROM 1, prom23_1.hex.  ... and so on.
+
+There are 512 microcode instruction works, broken down into a 1st bank of 256 and a second bank of 256.  Each Magic-1 instruction can be thought of as a one-byte opcode optionally followed by additional bytes.  The one-byte opcode is decoded by using it as a direct index into the 1st 256 bank of microinstructions.  The first machine cycle of a new instruction always happens in that 1st 256 words, while all subsequent machine cycles happen in the 2nd bank of 256 microcode instructions.
+
+All microcode instructions feed into and drive the control logic on the control card.
+
+Now, the order of the instructions is sometimes important.  By carefully ordering the instructions, we can reduce the amount of microcode needed.   For example, consider the following Magic-1 instructions:
+
+    0x09: pop MSW
+    0x0a: pop C
+    0x0b: pop PC
+    0x0c: pop DP
+    0x0d: pop SP
+    0x0e: pop A
+    0x0f: pop B
+
+
+Look at the v2.3 Microcode web page and note that all of the above instructions use the same microcode: 
+
+    TO_Z(R_SP),DATA,NEXT(Pop16)  ; on 1st page
+
+    then going to instruction 0x139 in 2nd half:
+
+    0x139: LDHI,NEXT(FALLTHROUGH)
+    0x13a: READLO,INC_TO_Z(R_MAR),L(R_SP,LWORD),DATA,NEXT(FALLTHROUGH)
+    0x13b: TO_Z(R_MDR),L(R_IR_REG,LWORD),NEXT(PCtoMAR)
+    0x1c2: TO_Z(R_PC),CODE,NEXT(Fetch)
+
+The important part here is the L(R_IR_REG,LWORD) in microinstruction 0x13b.  The L(reg,size) macro defines which register latch signal will be asserted on the control card (see U7:LATCH[0..3] on the control card).  Those bits are then fed into U36 and U42 on the Field Decode sheet to produce the register latch signals.  Look at the microcode page to find the LATCH register defines: R_MSW is 1, R_C is 2, and so on.  When writing microcode, you could cause SP to latch data on the Z bus by generating L(R_SP,LWORD).
+
+However, look at U42A on the Field Decode sheet.  If the LATCH[0..3] bits are all 1 (i.e. 15, or R_IR_REG), then instead of using the register defined in the LATCH bits, the low 3 bits of the instruction register are used.  Looking again at the pop instructions and the least significant 3 bits of the instruction encoding:
+
+    0x09: pop MSW, low 3 bits - 001, R_MSW (1)
+    0x0a: pop C, low 3 bits - 010, R_C (2)
+    0x0b: pop PC, low 3 bits - 011, R_PC (3)
+    0x0c: pop DP, low 3 bits - 100, R_DP (4)
+    0x0d: pop SP, low 3 bits - 101, R_SP (5)
+    0x0e: pop A, low 3 bits - 110, R_A (6)
+    0x0f: pop B, low 3 bits - 111, R_B (7)
+
+So, by taking advantage of bits from the instruction encoding, we can allow multiple instructions to share the same microcode.  Note that you don't have to use this trick - any of the pop instructions could be moved to a different location - but you would not be able to use shared microcode for them.
+
+In other words, it is easy to replace a microcode instruction but not always easy to move them to a different opcode value.   To add a new microcode instruction, you could just replace an old one.  For example, TRAPO is not currently used.
+
+Hope this helps,
+...Bill
+
 
 <pre>
 
