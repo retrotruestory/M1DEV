@@ -13,6 +13,9 @@ The computer uses a specially modified version of <a href="https://minix1.woodhu
   be released under the same license. 
 </pre>
 
+>[!NOTE]
+>All annotations marked as NOTE are comments straight from Bill
+
 <b>Below is the 24-point summary of the Magic 1 computer architecture:</b>
 <br>
 
@@ -53,7 +56,7 @@ The computer uses a specially modified version of <a href="https://minix1.woodhu
     24. The overall compromise between theoretical elegance and practical implementation ensures future development and enables deployments in modern computing systems.
 
 This summary provides a detailed technical overview highlighting both the strengths of the Magic 1 architecture and its constructive compromises.<br><br>
-<pre>
+
 The primary goal is to collect as much information as possible about this computer and present it 
 in a way that makes it easier to understand its architecture and how it functions.
   
@@ -99,10 +102,10 @@ ISA, or Instruction Set Architecture, is part of the abstract model of a compute
 controlled by the software. The set of instructions is divided into groups (according to their application type). 
 I will describe their functions, such as data type/addressing method and the possibility of combining instructions.
 
-</pre>
+
   
 Here’s a detailed explanation of the verified facts regarding the "Magic Architecture" as described in the text:
-<pre>
+
    One-Address Architecture:
         This means that the architecture uses a single address in its instruction set to specify the operand for operations. 
         In a one-address architecture, instructions typically involve a single memory address, which is used for both the 
@@ -169,7 +172,7 @@ Here’s a detailed explanation of the verified facts regarding the "Magic Archi
         Microcode is a layer of instructions that translates higher-level machine instructions into sequences of operations that the 
         hardware can execute, 
         allowing for more complex instruction sets and functionalities.
-</pre>
+
 <b>Processor Commands</b>
 <pre>
 Here are several processor commands, their binary notation, and examples of their construction and application:
@@ -244,7 +247,7 @@ operations and commands. The architecture's use of microcode and atomic instruct
 while maintaining data integrity. The examples of processor commands illustrate how instructions are structured and executed within this 
 architecture.
   
-<pre>
+
 Here’s a detailed explanation of the additional 20 facts regarding the "Magic Architecture," 
 focusing on the microcode and its implications for the architecture's design and functionality:
   
@@ -392,4 +395,4 @@ These points collectively illustrate the complexity and thoughtfulness behind th
 emphasizing its reliance on microcode, the careful structuring of operations, and the balance between simplicity 
 and functionality.
   
-</pre>
+
