@@ -17,7 +17,7 @@ The computer uses a specially modified version of <a href="https://minix1.woodhu
 <br>
 
     1. The architecture is based on a one-address model, where one operand is implicit, simplifying instruction design.
->[!NOTE from Bill]
+>[!NOTE]
 >Yes, it started off that way - but I expanded it somewhat.  In a true one-address accumulator model, register A would be involved in nearly all instructions.  
 >However, for more efficiency I added B and C registers.  C is pretty limited, but B acts as an added accumulator for loads/stores as well as limited arithmetic 
 >using the “lea” instruction.
