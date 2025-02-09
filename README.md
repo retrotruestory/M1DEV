@@ -17,8 +17,10 @@ The computer uses a specially modified version of <a href="https://minix1.woodhu
 <br>
 <ol>
     <li>The architecture is based on a one-address model, where one operand is implicit, simplifying instruction design.</li></ol>
-  > [!NOTE]
-  >Yes, it started off that way - but I expanded it somewhat.  In a true one-address accumulator model, register A would be involved in nearly all instructions.  However, for more efficiency I added B and C registers.  C is pretty limited, but B acts as an added accumulator for loads/stores as well as limited arithmetic using the “lea” instruction.
+> [!NOTE]
+>Yes, it started off that way - but I expanded it somewhat.  In a true one-address accumulator model, register A would be involved in nearly all instructions.  
+>However, for more efficiency I added B and C registers.  C is pretty limited, but B acts as an added accumulator for loads/stores as well as limited arithmetic 
+>using the “lea” instruction.
 
     <li>The system supports data operations in 8-bit and 16-bit widths, offering computational flexibility.</li>
     <li>Each process has a virtual address space with a capacity of up to 128KB.</li>
