@@ -38,7 +38,8 @@ The computer uses a specially modified version of <a href="https://minix1.woodhu
     12. There is a balanced trade-off between simplicity (one-address architecture) and performance (additional registers and complex addressing modes).
     13. The design includes both atomic operations and complex data manipulation, supporting efficient parallel and multi-threaded computing.
 >[!NOTE]
->Magic-1 doesn’t currently do multi-threading, but it could.  I added a special atomic instruction, ldclr.8 a,(b), that could be used to build a semaphore to guard critical regions in code.  Perhaps some day I’ll use it.    
+>Magic-1 doesn’t currently do multi-threading, but it could.  I added a special atomic instruction, ldclr.8 a,(b), that could be used to build a semaphore to guard critical regions in code.  Perhaps some day I’ll use it.
+
     14. Sophisticated scheduling of microcode instructions allows the system to adapt to various programming paradigms.
     15. The system's memory management unit (MMU) efficiently handles virtual-to-physical address translations.
     16. Hardware-level support for concurrency ensures effective multitasking and high throughput under multiple process loads.
