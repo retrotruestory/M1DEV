@@ -103,7 +103,7 @@ ISA, or Instruction Set Architecture, is part of the abstract model of a compute
 controlled by the software. The set of instructions is divided into groups (according to their application type). 
 I will describe their functions, such as data type/addressing method and the possibility of combining instructions.
 
-
+<br><br>
   
 Here’s a detailed explanation of the verified facts regarding the "Magic Architecture" as described in the text:
 
@@ -160,11 +160,11 @@ Here’s a detailed explanation of the verified facts regarding the "Magic Archi
         data integrity in multi-threaded or interrupt-driven environments.
       >[!NOTE]
 >This statement is basically true, but uses “atomic” in a non-standard way.  In most technical literature “atomic operations” 
-  >are those that do an atomic read/modify/write on  memory location.  This is what Magic-1’s “ldclr.8 a,(b)” is for.  
-  >See: https://en.wikipedia.org/wiki/Semaphore_(programming)
+>are those that do an atomic read/modify/write on  memory location.  This is what Magic-1’s “ldclr.8 a,(b)” is for.  
+>See: https://en.wikipedia.org/wiki/Semaphore_(programming)
 >Incidentally, Magic-1 does have a few instrucitons that are not atomic.  Memcopy, for example, can be interrupted.  
-  >It uses C as a count register and can be interrupted at each byte copy boundary.  But, because it’s progress is recorded in 
-  >register C, it can correctly resume after the interrupt is processed. 
+>It uses C as a count register and can be interrupted at each byte copy boundary.  But, because it’s progress is recorded in 
+>register C, it can correctly resume after the interrupt is processed. 
 
 
     Microcode:
@@ -281,10 +281,10 @@ target the lower or higher parts of a register, respectively.
 Each micro-operation is annotated with specific operations that may apply to registers, such as 
 INC_TO_Z (increment to zero) or DEC_TO_Z (decrement to zero). This level of detail allows for 
 precise control over register states during execution.
-        >[!NOTE]
+>[!NOTE]
 >In a separate document, I’ll try to explain the microcode a little better.  The “INC_TO_Z” and other similar operators are 
-  >simply macros I defined to make creating the microcode a little easier.  It is not very clear, but it probably made sense 
-  >to me at the time I did it 20 years ago.  I will have to spend a little time looking at it myself to remember how it all worked.
+>simply macros I defined to make creating the microcode a little easier.  It is not very clear, but it probably made sense 
+>to me at the time I did it 20 years ago.  I will have to spend a little time looking at it myself to remember how it all worked.
   
 6. Documented Opcodes with Hexadecimal Addresses
 
