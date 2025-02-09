@@ -19,41 +19,41 @@ The computer uses a specially modified version of <a href="https://minix1.woodhu
 <b>Below is the 24-point summary of the Magic 1 computer architecture:</b>
 <br>
 
-    1. The architecture is based on a one-address model, where one operand is implicit, simplifying instruction design.
+1. The architecture is based on a one-address model, where one operand is implicit, simplifying instruction design.
 >[!NOTE]
 >Yes, it started off that way - but I expanded it somewhat.  In a true one-address accumulator model, register A would be involved in nearly all instructions. 
 >However, for more efficiency I added B and C registers.  C is pretty limited, but B acts as an added accumulator for loads/stores as well as limited arithmetic 
 >using the “lea” instruction.
 
-    2. The system supports data operations in 8-bit and 16-bit widths, offering computational flexibility.
-    3. Each process has a virtual address space with a capacity of up to 128KB.
-    4. The virtual address space is divided into 32 data pages and 32 code pages, each sized at 2KB.
-    5. The physical address space primarily uses a 22-bit address; however, when considering device mappings, it effectively uses 23-bit.
-    6. Each process uses a dedicated page table consisting of 64 entries, each 16-bit in size.
-    7. The page table is stored in separate memory and is accessed via a base pointer allocated for each process.
-    8. Memory implementation is realized through memory mapping, where peripheral devices share the same address space as main memory.
-    9. The system supports external interrupts, allowing rapid response to hardware events.
-    10. Direct Memory Access (DMA) is integrated, enabling direct data transfers without CPU intervention.
+2. The system supports data operations in 8-bit and 16-bit widths, offering computational flexibility.
+3. Each process has a virtual address space with a capacity of up to 128KB.
+4. The virtual address space is divided into 32 data pages and 32 code pages, each sized at 2KB.
+5. The physical address space primarily uses a 22-bit address; however, when considering device mappings, it effectively uses 23-bit.
+6. Each process uses a dedicated page table consisting of 64 entries, each 16-bit in size.
+7. The page table is stored in separate memory and is accessed via a base pointer allocated for each process.
+8. Memory implementation is realized through memory mapping, where peripheral devices share the same address space as main memory.
+9. The system supports external interrupts, allowing rapid response to hardware events.
+10. Direct Memory Access (DMA) is integrated, enabling direct data transfers without CPU intervention.
 >[!NOTE]
 >Technically yes, but the only usage of the DMA model is the front panel.  More sophisticated CPUs will allow devices to use DMA mode to transfer data to and from devices.
     
-    11. The processor employs a microcode-driven control mechanism for fine-tuned instruction sequencing and optimization of performance.
-    12. There is a balanced trade-off between simplicity (one-address architecture) and performance (additional registers and complex addressing modes).
-    13. The design includes both atomic operations and complex data manipulation, supporting efficient parallel and multi-threaded computing.
+11. The processor employs a microcode-driven control mechanism for fine-tuned instruction sequencing and optimization of performance.
+12. There is a balanced trade-off between simplicity (one-address architecture) and performance (additional registers and complex addressing modes).
+13. The design includes both atomic operations and complex data manipulation, supporting efficient parallel and multi-threaded computing.
 >[!NOTE]
 >Magic-1 doesn’t currently do multi-threading, but it could.  I added a special atomic instruction, ldclr.8 a,(b), that could be used to build a semaphore to guard critical regions in code.  Perhaps some day I’ll use it.
 
-    14. Sophisticated scheduling of microcode instructions allows the system to adapt to various programming paradigms.
-    15. The system's memory management unit (MMU) efficiently handles virtual-to-physical address translations.
-    16. Hardware-level support for concurrency ensures effective multitasking and high throughput under multiple process loads.
-    17. The architecture integrates specialized control units to manage IO devices and system buses.
-    18. The instruction set architecture (ISA) is optimized for modern high-level programming languages, facilitating efficient translation of high-level code into hardware operations.
-    19. The system is designed to balance the simplicity of hardware logic with the complexity required by modern applications.
-    20. Dedicated registers and specialized addressing modes enhance the speed and accuracy of operations.
-    21. The architecture anticipates flexible memory management, which is crucial for implementing multiprocessing.
-    22. Microcode scheduling technologies allow the system to adapt to changing workloads.
-    23. The system design considers data security aspects through strict management of the memory address space. 
-    24. The overall compromise between theoretical elegance and practical implementation ensures future development and enables deployments in modern computing systems.
+14. Sophisticated scheduling of microcode instructions allows the system to adapt to various programming paradigms.
+15. The system's memory management unit (MMU) efficiently handles virtual-to-physical address translations.
+16. Hardware-level support for concurrency ensures effective multitasking and high throughput under multiple process loads.
+17. The architecture integrates specialized control units to manage IO devices and system buses.
+18. The instruction set architecture (ISA) is optimized for modern high-level programming languages, facilitating efficient translation of high-level code into hardware operations.
+19. The system is designed to balance the simplicity of hardware logic with the complexity required by modern applications.
+20. Dedicated registers and specialized addressing modes enhance the speed and accuracy of operations.
+21. The architecture anticipates flexible memory management, which is crucial for implementing multiprocessing.
+22. Microcode scheduling technologies allow the system to adapt to changing workloads.
+23. The system design considers data security aspects through strict management of the memory address space. 
+24. The overall compromise between theoretical elegance and practical implementation ensures future development and enables deployments in modern computing systems.
 
 This summary provides a detailed technical overview highlighting both the strengths of the Magic 1 architecture and its constructive compromises.<br><br>
 
@@ -82,13 +82,13 @@ The microcode is located in high-speed EPROMs like AMD 27C256-55.5V 32kx8, DIP-2
   
 The basic code is located in three places:
 
-  1.<b>Bootloader:</b> Code that loads the monitor, operating system, and IDE driver.
-  2.<b>EPROM/PROM:</b> A set of micro-instructions loaded into the computer's RAM during Magic-1 startup.
-  >[!NOTE]
+1.<b>Bootloader:</b> Code that loads the monitor, operating system, and IDE driver.
+2.<b>EPROM/PROM:</b> A set of micro-instructions loaded into the computer's RAM during Magic-1 startup.
+>[!NOTE]
 >I don’t think it would be accurate to say the microcode is loaded into the computer’s RAM.  The microcode has no connection with the system’s data and address busses.  It is read-only and is used only by the decoding logic.
   
-  3.<b>CF/IDE:</b> A set of partitions and the modified version of the Minix 2.0.4 operating system, 
-      which the user uses to boot the computer, load the system, and log in to the system operator console.
+3.<b>CF/IDE:</b> A set of partitions and the modified version of the Minix 2.0.4 operating system, 
+which the user uses to boot the computer, load the system, and log in to the system operator console.
 
 <b>Tools</b>
 
@@ -106,57 +106,57 @@ I will describe their functions, such as data type/addressing method and the pos
   
 Here’s a detailed explanation of the verified facts regarding the "Magic Architecture" as described in the text:
 
-   One-Address Architecture:
-    This means that the architecture uses a single address in its instruction set to specify the operand for operations. 
-    In a one-address architecture, instructions typically involve a single memory address, which is used for both the 
-    source and destination of data. 
-    The operations can be either 8-bit or 16-bit, indicating the size of the data being processed.
+One-Address Architecture:
+This means that the architecture uses a single address in its instruction set to specify the operand for operations. 
+In a one-address architecture, instructions typically involve a single memory address, which is used for both the 
+source and destination of data. 
+The operations can be either 8-bit or 16-bit, indicating the size of the data being processed.
 
-    Address Space:
-    The architecture provides each process with a virtual address space of up to 128K bytes. 
-    This space is organized into 32 pages for data and 32 pages for code, with each page being 2K bytes in size. 
-    This organization allows for efficient memory management and access, as the system can easily map these pages into 
-    physical memory.
+Address Space:
+The architecture provides each process with a virtual address space of up to 128K bytes. 
+This space is organized into 32 pages for data and 32 pages for code, with each page being 2K bytes in size. 
+This organization allows for efficient memory management and access, as the system can easily map these pages into 
+physical memory.
 
-    Physical Addressing:
-       The virtual address space is mapped into a physical address space that is 22 bits wide. 
-       This means that the architecture can address up to (2^{22}) bytes of physical memory, which is approximately 4MB. 
-       When considering device space, it effectively extends to 23 bits, allowing for additional addressing capabilities.
+Physical Addressing:
+The virtual address space is mapped into a physical address space that is 22 bits wide. 
+This means that the architecture can address up to (2^{22}) bytes of physical memory, which is approximately 4MB. 
+When considering device space, it effectively extends to 23 bits, allowing for additional addressing capabilities.
 
-    Page Table:
-    Each process has a dedicated page table that consists of 64 entries, with each entry being 16 bits. 
-    This page table is crucial for translating virtual addresses to physical addresses, enabling the operating system to 
-    manage memory efficiently. 
-    The page table is located in dedicated memory, and each process has a base pointer to its own page table.
+Page Table:
+Each process has a dedicated page table that consists of 64 entries, with each entry being 16 bits. 
+This page table is crucial for translating virtual addresses to physical addresses, enabling the operating system to 
+manage memory efficiently. 
+The page table is located in dedicated memory, and each process has a base pointer to its own page table.
 
-    Memory-Mapped I/O:
-    The architecture employs memory-mapped I/O, meaning that certain memory addresses are reserved for I/O devices. 
-    The top 128 bytes of memory are specifically allocated for device control blocks, 
-    allowing the CPU to interact with hardware devices as if they were part of the memory space.
+Memory-Mapped I/O:
+The architecture employs memory-mapped I/O, meaning that certain memory addresses are reserved for I/O devices. 
+The top 128 bytes of memory are specifically allocated for device control blocks, 
+allowing the CPU to interact with hardware devices as if they were part of the memory space.
 
-    Interrupts and DMA:
-    The architecture supports external interrupts and Direct Memory Access (DMA). 
-    This means that hardware devices can signal the CPU to interrupt its current operations, allowing for responsive 
-    handling of events. 
-    DMA allows devices to transfer data directly to and from memory without CPU intervention, improving performance.
+Interrupts and DMA:
+The architecture supports external interrupts and Direct Memory Access (DMA). 
+This means that hardware devices can signal the CPU to interrupt its current operations, allowing for responsive 
+handling of events. 
+DMA allows devices to transfer data directly to and from memory without CPU intervention, improving performance.
 >[!NOTE]
 >I would say the top 128 bytes of the low 64K of device memory.  In other words, addresses 0xFF80 through 0xFFFF.
 
-    Endianness:
-    The architecture uses big-endian format for data storage, meaning that the most significant byte of a word is stored 
-    at the lowest memory address. 
-    This affects how multi-byte data types are read from and written to memory.
+Endianness:
+The architecture uses big-endian format for data storage, meaning that the most significant byte of a word is stored 
+at the lowest memory address. 
+This affects how multi-byte data types are read from and written to memory.
 
 Addressing Modes:
-    The architecture supports a variety of addressing modes, including register indirect, frame local, global, immediate, 
-    push, and pop. 
-    These modes provide flexibility in how operands are accessed and manipulated, allowing for more complex data structures 
-    and operations.
+The architecture supports a variety of addressing modes, including register indirect, frame local, global, immediate, 
+push, and pop. 
+These modes provide flexibility in how operands are accessed and manipulated, allowing for more complex data structures 
+and operations.
 
 Atomic Instructions:
-    The architecture includes atomic instructions such as "compare and branch" and "test and branch." 
-    These instructions are executed as a single, indivisible operation, which is essential for maintaining 
-    data integrity in multi-threaded or interrupt-driven environments.
+The architecture includes atomic instructions such as "compare and branch" and "test and branch." 
+These instructions are executed as a single, indivisible operation, which is essential for maintaining 
+data integrity in multi-threaded or interrupt-driven environments.
 >[!NOTE]
 >This statement is basically true, but uses “atomic” in a non-standard way.  In most technical literature “atomic operations” 
 >are those that do an atomic read/modify/write on  memory location.  This is what Magic-1’s “ldclr.8 a,(b)” is for. 
@@ -165,13 +165,12 @@ Atomic Instructions:
 >It uses C as a count register and can be interrupted at each byte copy boundary.  But, because it’s progress is recorded in 
 >register C, it can correctly resume after the interrupt is processed. 
 
-
 Microcode:
-    A significant amount of microcode is utilized in the architecture, with five 512x8-bit Programmable Read-Only Memories (PROMs) 
-    dedicated to storing microcode. 
-    Microcode is a layer of instructions that translates higher-level machine instructions into sequences of operations that the 
-    hardware can execute, 
-    allowing for more complex instruction sets and functionalities.
+A significant amount of microcode is utilized in the architecture, with five 512x8-bit Programmable Read-Only Memories (PROMs) 
+dedicated to storing microcode. 
+Microcode is a layer of instructions that translates higher-level machine instructions into sequences of operations that the 
+hardware can execute, 
+allowing for more complex instruction sets and functionalities.
 
 <b>Conclusion</b><br>
 
