@@ -15,37 +15,37 @@ The computer uses a specially modified version of <a href="https://minix1.woodhu
 
 <b>Below is the 24-point summary of the Magic 1 computer architecture:</b>
 <br>
-<ol>
-    <li>The architecture is based on a one-address model, where one operand is implicit, simplifying instruction design.</li></ol>
+
+    1. The architecture is based on a one-address model, where one operand is implicit, simplifying instruction design.
 >[!NOTE]
 >Yes, it started off that way - but I expanded it somewhat.  In a true one-address accumulator model, register A would be involved in nearly all instructions.  
 >However, for more efficiency I added B and C registers.  C is pretty limited, but B acts as an added accumulator for loads/stores as well as limited arithmetic 
 >using the “lea” instruction.
-<ol>
-    <li>The system supports data operations in 8-bit and 16-bit widths, offering computational flexibility.</li>
-    <li>Each process has a virtual address space with a capacity of up to 128KB.</li>
-    <li>The virtual address space is divided into 32 data pages and 32 code pages, each sized at 2KB.</li>
-    <li>The physical address space primarily uses a 22-bit address; however, when considering device mappings, it effectively uses 23-bit.</li>
-    <li>Each process uses a dedicated page table consisting of 64 entries, each 16-bit in size.</li>
-    <li>The page table is stored in separate memory and is accessed via a base pointer allocated for each process.</li>
-    <li>Memory implementation is realized through memory mapping, where peripheral devices share the same address space as main memory.</li>
-    <li>The system supports external interrupts, allowing rapid response to hardware events.</li>
-    <li>Direct Memory Access (DMA) is integrated, enabling direct data transfers without CPU intervention.</li>
-    <li>The processor employs a microcode-driven control mechanism for fine-tuned instruction sequencing and optimization of performance.</li>
-    <li>There is a balanced trade-off between simplicity (one-address architecture) and performance (additional registers and complex addressing modes).</li>
-    <li>The design includes both atomic operations and complex data manipulation, supporting efficient parallel and multi-threaded computing.</li>
-    <li>Sophisticated scheduling of microcode instructions allows the system to adapt to various programming paradigms.</li>
-    <li>The system's memory management unit (MMU) efficiently handles virtual-to-physical address translations.</li>
-    <li>Hardware-level support for concurrency ensures effective multitasking and high throughput under multiple process loads.</li>
-    <li>The architecture integrates specialized control units to manage IO devices and system buses.</li>
-    <li>The instruction set architecture (ISA) is optimized for modern high-level programming languages, facilitating efficient translation of high-level code into hardware operations.</li>
-    <li>The system is designed to balance the simplicity of hardware logic with the complexity required by modern applications.</li>
-    <li>Dedicated registers and specialized addressing modes enhance the speed and accuracy of operations.</li>
-    <li>The architecture anticipates flexible memory management, which is crucial for implementing multiprocessing.</li>
-    <li>Microcode scheduling technologies allow the system to adapt to changing workloads.</li>
-    <li>The system design considers data security aspects through strict management of the memory address space.</li>    
-    <li>The overall compromise between theoretical elegance and practical implementation ensures future development and enables deployments in modern computing systems.</li>
-</ol>
+
+    2. The system supports data operations in 8-bit and 16-bit widths, offering computational flexibility.
+    3. Each process has a virtual address space with a capacity of up to 128KB.
+    4. The virtual address space is divided into 32 data pages and 32 code pages, each sized at 2KB.
+    5. The physical address space primarily uses a 22-bit address; however, when considering device mappings, it effectively uses 23-bit.
+    6. Each process uses a dedicated page table consisting of 64 entries, each 16-bit in size.
+    7. The page table is stored in separate memory and is accessed via a base pointer allocated for each process.
+    8. Memory implementation is realized through memory mapping, where peripheral devices share the same address space as main memory.
+    9. The system supports external interrupts, allowing rapid response to hardware events.
+    10. Direct Memory Access (DMA) is integrated, enabling direct data transfers without CPU intervention.
+    11. The processor employs a microcode-driven control mechanism for fine-tuned instruction sequencing and optimization of performance.
+    12. There is a balanced trade-off between simplicity (one-address architecture) and performance (additional registers and complex addressing modes).
+    13. The design includes both atomic operations and complex data manipulation, supporting efficient parallel and multi-threaded computing.
+    14. Sophisticated scheduling of microcode instructions allows the system to adapt to various programming paradigms.
+    15. The system's memory management unit (MMU) efficiently handles virtual-to-physical address translations.
+    16. Hardware-level support for concurrency ensures effective multitasking and high throughput under multiple process loads.
+    17. The architecture integrates specialized control units to manage IO devices and system buses.
+    18. The instruction set architecture (ISA) is optimized for modern high-level programming languages, facilitating efficient translation of high-level code into hardware operations.
+    19. The system is designed to balance the simplicity of hardware logic with the complexity required by modern applications.
+    20. Dedicated registers and specialized addressing modes enhance the speed and accuracy of operations.
+    21. The architecture anticipates flexible memory management, which is crucial for implementing multiprocessing.
+    22. Microcode scheduling technologies allow the system to adapt to changing workloads.
+    23. The system design considers data security aspects through strict management of the memory address space.    
+    24. The overall compromise between theoretical elegance and practical implementation ensures future development and enables deployments in modern computing systems.
+
 This summary provides a detailed technical overview highlighting both the strengths of the Magic 1 architecture and its constructive compromises.<br><br>
 <pre>
 The primary goal is to collect as much information as possible about this computer and present it 
