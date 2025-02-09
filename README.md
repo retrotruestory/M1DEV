@@ -31,9 +31,14 @@ The computer uses a specially modified version of <a href="https://minix1.woodhu
     8. Memory implementation is realized through memory mapping, where peripheral devices share the same address space as main memory.
     9. The system supports external interrupts, allowing rapid response to hardware events.
     10. Direct Memory Access (DMA) is integrated, enabling direct data transfers without CPU intervention.
+>[!NOTE]
+>Technically yes, but the only usage of the DMA model is the front panel.  More sophisticated CPUs will allow devices to use DMA mode to transfer data to and from devices.
+    
     11. The processor employs a microcode-driven control mechanism for fine-tuned instruction sequencing and optimization of performance.
     12. There is a balanced trade-off between simplicity (one-address architecture) and performance (additional registers and complex addressing modes).
     13. The design includes both atomic operations and complex data manipulation, supporting efficient parallel and multi-threaded computing.
+>[!NOTE]
+>Magic-1 doesn’t currently do multi-threading, but it could.  I added a special atomic instruction, ldclr.8 a,(b), that could be used to build a semaphore to guard critical regions in code.  Perhaps some day I’ll use it.    
     14. Sophisticated scheduling of microcode instructions allows the system to adapt to various programming paradigms.
     15. The system's memory management unit (MMU) efficiently handles virtual-to-physical address translations.
     16. Hardware-level support for concurrency ensures effective multitasking and high throughput under multiple process loads.
@@ -76,6 +81,8 @@ The basic code is located in three places:
 
   1.<b>Bootloader:</b> Code that loads the monitor, operating system, and IDE driver.
   2.<b>EPROM/PROM:</b> A set of micro-instructions loaded into the computer's RAM during Magic-1 startup.
+  >[!NOTE]
+>I don’t think it would be accurate to say the microcode is loaded into the computer’s RAM.  The microcode has no connection with the system’s data and address busses.  It is read-only and is used only by the decoding logic.
   3.<b>CF/IDE:</b> A set of partitions and the modified version of the Minix 2.0.4 operating system, 
       which the user uses to boot the computer, load the system, and log in to the system operator console.
 
@@ -128,6 +135,8 @@ Here’s a detailed explanation of the verified facts regarding the "Magic Archi
         This means that hardware devices can signal the CPU to interrupt its current operations, allowing for responsive 
         handling of events. 
         DMA allows devices to transfer data directly to and from memory without CPU intervention, improving performance.
+    >[!NOTE]
+>I would say the top 128 bytes of the low 64K of device memory.  In other words, addresses 0xFF80 through 0xFFFF.
 
     Endianness:
         The architecture uses big-endian format for data storage, meaning that the most significant byte of a word is stored 
@@ -144,6 +153,14 @@ Here’s a detailed explanation of the verified facts regarding the "Magic Archi
         The architecture includes atomic instructions such as "compare and branch" and "test and branch." 
         These instructions are executed as a single, indivisible operation, which is essential for maintaining 
         data integrity in multi-threaded or interrupt-driven environments.
+      >[!NOTE]
+>This statement is basically true, but uses “atomic” in a non-standard way.  In most technical literature “atomic operations” 
+  >are those that do an atomic read/modify/write on  memory location.  This is what Magic-1’s “ldclr.8 a,(b)” is for.  
+  >See: https://en.wikipedia.org/wiki/Semaphore_(programming)
+>Incidentally, Magic-1 does have a few instrucitons that are not atomic.  Memcopy, for example, can be interrupted.  
+  >It uses C as a count register and can be interrupted at each byte copy boundary.  But, because it’s progress is recorded in 
+  >register C, it can correctly resume after the interrupt is processed. 
+
 
     Microcode:
         A significant amount of microcode is utilized in the architecture, with five 512x8-bit Programmable Read-Only Memories (PROMs) 
@@ -259,6 +276,10 @@ target the lower or higher parts of a register, respectively.
 Each micro-operation is annotated with specific operations that may apply to registers, such as 
 INC_TO_Z (increment to zero) or DEC_TO_Z (decrement to zero). This level of detail allows for 
 precise control over register states during execution.
+        >[!NOTE]
+>In a separate document, I’ll try to explain the microcode a little better.  The “INC_TO_Z” and other similar operators are 
+  >simply macros I defined to make creating the microcode a little easier.  It is not very clear, but it probably made sense 
+  >to me at the time I did it 20 years ago.  I will have to spend a little time looking at it myself to remember how it all worked.
   
 6. Documented Opcodes with Hexadecimal Addresses
 
@@ -277,12 +298,20 @@ the carry flag in arithmetic operations.
 The microcode includes special entries such as "UNUSABLE" and "Unreachable" to manage error 
 conditions or invalid states. This helps ensure that the system can gracefully handle unexpected 
 situations.
+  >[!NOTE]
+>I think the “UNUSABLE” microcode position exists because there is logic in the microcode section of the control card that u
+  >ses microcode address 0x1FF for a special condition.  Thus, the micocode word at 0x1FF will never be used.  I don’t 
+  >immediately remember the details. There is probably something similar going on with address 0x1FE.
   
 9. Control Flow Emphasis
 
 Microcode emphasizes control flow, with each instruction concluding with a NEXT directive 
 (e.g., NEXT(FALLTHRU) or NEXT(PCtoMAR)). This defines how control is transferred to the next 
 instruction, ensuring proper sequencing.
+    >[!NOTE]
+>I did this because it seemed simpler to me at the time.  For many microcoded CPUs, there would exist a special microcode 
+  >program counter to control execution flow through the microcode.  Instead, I simply have each microcode instruction declare 
+  >which microcode instruction be executed next.  This allowed me to not bother with added a microcode PC.
   
 10. Distinction Between Data Movement and Control Operations
 
@@ -301,6 +330,9 @@ efficient execution of complex operations.
 The architecture features a clear partitioning of registers, including R_A (the primary accumulator), 
 R_B, and R_C. R_C is often used for branching or condition tests, which helps streamline control 
 flow in programs.
+      >[!NOTE]
+>Register C is mostly used as a count register for instructions that repeat, like memcopy and the variable shifts.  
+  >Otherwise, it is often used as temporary storage.  Register B can be through of as the secondary accumulator.
   
 13. Page Table Design and Addressing Modes
 
@@ -320,6 +352,10 @@ Microcode schedules indicate that even simple operations may be split across sev
 with each step carefully sequenced. This allows for precise control over the execution timing of 
 operations.
 16. Specialized Commands for Atomic Operations
+      >[!NOTE]
+>The compare-and-branch instructions exist largely to reduce code size.  In most programs, it is extremely common 
+  >to do a compare, followed by a branch to a nearby location.  By combining the compare instruction with the branch 
+  >instruction we can reduce program size (and make more things fit in our 64K-byte code space).
 
 The use of microcode enables specialized commands for atomic operations, such as "compare and branch" 
 and "test and branch." These commands ensure that operations are executed in a way that maintains data 
@@ -330,6 +366,10 @@ integrity and correct sequencing.
 The architecture strictly adheres to big-endian ordering for both bits and bytes. This design choice 
 is not only a technical specification but also a philosophical statement, as it reflects a preference 
 for a certain way of organizing data in memory.
+        >[!NOTE]
+>In truth, there is no real advantage to either bit-endian or little-endian.  I chose big-endian because of personal preference.  
+  >And, for what it’s worth, it would not take much effort to change Magic-1 into a little-endian machine.  Just a few dozen 
+  >microcode routines would need to be changed.
   
 18. Rich Instruction Set
 
