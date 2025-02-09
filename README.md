@@ -87,6 +87,7 @@ The basic code is located in three places:
   2.<b>EPROM/PROM:</b> A set of micro-instructions loaded into the computer's RAM during Magic-1 startup.
   >[!NOTE]
 >I don’t think it would be accurate to say the microcode is loaded into the computer’s RAM.  The microcode has no connection with the system’s data and address busses.  It is read-only and is used only by the decoding logic.
+  
   3.<b>CF/IDE:</b> A set of partitions and the modified version of the Minix 2.0.4 operating system, 
       which the user uses to boot the computer, load the system, and log in to the system operator console.
 
